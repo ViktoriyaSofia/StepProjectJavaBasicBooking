@@ -1,3 +1,6 @@
+# StepProjectJavaBasicBooking
+Step Project JavaBasic Booking
+
 ## Задача
 
 #### Создать консольное Java приложение для бронировки авиабилетов
