@@ -1,8 +1,8 @@
 package com.booking.app.domain.console.wrongInputDataException;
 
 public class WrongInputDataException extends RuntimeException{
-    public Throwable throwException() throws RuntimeException {
-        throw new RuntimeException("!WRONG INPUT! >> " +
-                "Look required input option of menu or data input rules and try again!");
+    public static void throwException(){
+        System.err.println("WRONG INPUT DATA! >> " +
+                "Look required input option of menu or required input data rules and try again!\n");
     }
 }
