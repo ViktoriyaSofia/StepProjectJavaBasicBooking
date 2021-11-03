@@ -1,3 +1,5 @@
 .idea/
+/mentor_instructions/
+*.md
 *.iml
 *.xml
