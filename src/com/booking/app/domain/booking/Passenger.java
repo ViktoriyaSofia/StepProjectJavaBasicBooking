@@ -11,6 +11,11 @@ public class Passenger implements Serializable {
         this.lName = lName;
     }
 
+    @Override
+    public String toString(){
+        return "\t\tname: " + name + "\t last name: " + lName;
+    }
+
     public String getName() {
         return name;
     }

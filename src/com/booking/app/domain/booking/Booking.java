@@ -29,10 +29,12 @@ static {bookingIDCounter = 0;}
 
     @Override
     public String toString(){
-        return "Booking number " + bookingID + "\n" +
+        return  "\nBooked for flight: "+ this.flightID +
+                "\n-> Booking number " + bookingID + "\n" +
                 "\t destination:\t" + this.dest +
                 "\t date:\t" + date.format(DateTimeFormatter.ofPattern("dd:MM:yyyy")) +
-                "\t seats:\t" + seats;
+                "\t booked " + seats + " seats in this booking.\n" +
+                "-> Passengers:\n" + pL;
     }
 
     public int getFlightID() {
