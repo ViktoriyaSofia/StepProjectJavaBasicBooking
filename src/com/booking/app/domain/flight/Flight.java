@@ -143,7 +143,6 @@ public class Flight implements Serializable {
         return "\tFlight: " +
             "flightID='" + (this.getFlightID() == -1 ? "no info" : this.getFlightID()) + '\'' +
             ", destination='" + (this.getDestination().equals("") ? "no info" : this.getDestination()) +'\'' +
-//            ",\n\t\t\t\tdateDeparture='" + (this.getDateSeconds() == -1 ? "no info" : getDateTimeStringFromEpochSecond(this.getDateSeconds())) + '\'' +
             ", dateDeparture='" + (this.getDateSeconds() == -1 ? "no info" : getDateTimeStringFromEpochSecond(this.getDateSeconds())) + '\'' +
             ", totalPlaces=" + totalPlaces +
             ", soldPlaces=" + soldPlaces +
