@@ -1,13 +1,15 @@
 package com.booking.app.dao;
 
 
+import com.booking.app.domain.booking.Booking;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 
 
-public abstract class a_Dao implements Dao {
+public abstract class a_Dao<T> implements Dao<T> {
     List<T> col = new ArrayList<T>();
 
     /**
@@ -91,7 +93,7 @@ public abstract class a_Dao implements Dao {
 
     ;
 
-    private class T {
+    protected class T {
     }
 }
 

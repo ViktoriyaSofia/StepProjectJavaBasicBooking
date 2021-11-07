@@ -6,4 +6,6 @@ public interface Dao<T> {
     boolean deleteById(int id);
     T findAll();
     T findById(int id);
+    boolean saveAll(String filename);
+    boolean retrieveAll(String filename);
 }

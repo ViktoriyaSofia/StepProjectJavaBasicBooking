@@ -1,13 +1,14 @@
 package com.booking.app;
 
-import com.booking.app.domain.booking.Booking;
+import com.booking.BookingService;
 
 public class App {
     public static void main(String[] args) {
 
         System.out.println("Welcome to the best flight booking app!");
 
-        Booking.createDefaultBookings();
+        BookingService.createDefaultBooking();
+
     }
 
 }
