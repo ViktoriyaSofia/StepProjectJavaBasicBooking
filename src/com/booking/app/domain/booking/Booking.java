@@ -29,11 +29,11 @@ public class Booking implements Serializable {
     }
 
     private int flightID;
-    private int bookingID;
+    private final int bookingID;
     private List<Passenger> pL = new ArrayList<>();
     private final String dest;
     private final LocalDate date;
-    private       int seats;
+    private int seats;
 
 static {bookingIDCounter = 0;}
 
