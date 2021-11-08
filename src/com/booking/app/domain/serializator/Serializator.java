@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Serializator {
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_RESET = "\u001B[0m";
 
 //  Метод serialization() принимает на вход коллекцию List<T> и путь к файлу для звписи
 //  - записывает (поверх данных в файле, если они есть) все объекты типа <T> из принятой коллекции в указанный файл
@@ -45,7 +47,7 @@ public class Serializator {
 
 //  Метод deSerialization() принимает путь к файлу для чтения данных из него (как коллекцию ArrayList<T>)
 //  - считывает и возврашат все объекты коллекции типа <T> из указанного файла
-    public <T> ArrayList<T> deSerialization(String path) throws InvalidObjectException {
+    public <T> ArrayList<T> deSerialization(String path) throws ClassNotFoundException {
         ArrayList<T> collection = null;
         File file = new File(path);
 
@@ -58,7 +60,9 @@ public class Serializator {
             collection = (ArrayList<T>) ois.readObject();
             return collection;
         } catch (ClassNotFoundException | IOException e) {
-            e.printStackTrace();
+            if(e.getClass().getName().equals("java.io.FileNotFoundException")){
+                System.out.println(ANSI_RED + e.getClass().getName() + "! : " + e.getMessage() + ANSI_RESET);
+            }
         } finally {
             if (fis != null) {
                 try {
@@ -75,50 +79,6 @@ public class Serializator {
                 }
             }
         }
-
-        throw new InvalidObjectException("Object fail");
+        return null;
     }
-
-
-//  Метод serializationAppending() принимает на вход коллекцию List<T> и путь к файлу для звписи:
-//  предполагается, что в файле уже есть идентичная коллекция объектов
-//  и нужно к ней (append) дозаписать другую коллекцию такого же типа
-//  - дозаписывает в конец указанного файла все объекты типа <T> из принятой коллекции
-    public <T> boolean serializationAppending(List<T> collection, String path) {
-        boolean isSerializationDone = false;
-        File file = new File(path);
-
-        FileOutputStream fos = null;
-        ObjectOutputStream oos = null;
-
-        try {
-            if (file.exists()) {
-                ArrayList<T> newData = deSerialization(path);
-                newData.addAll(collection);
-                fos = new FileOutputStream(file);
-                oos = new ObjectOutputStream(fos);
-                oos.writeObject(newData);
-                isSerializationDone = true;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (oos != null) {
-                try {
-                    oos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return isSerializationDone;
-    }
-
 }
