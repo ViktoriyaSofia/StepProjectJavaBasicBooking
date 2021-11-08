@@ -1,21 +1,14 @@
 package com.booking.app.dao;
 
-
-import com.booking.app.domain.booking.Booking;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-
-
 
 public abstract class a_Dao<T> implements Dao<T> {
     List<T> col = new ArrayList<T>();
 
     /**
      * метод сохранения коллекций col (flights, либо bookings) в файлах.  Имена файлов задаются параметром filename:
-     * @param filename
-     * @return
      */
     public boolean saveAll(String filename) {
         try (FileOutputStream fos = new FileOutputStream(filename);
@@ -31,8 +24,6 @@ public abstract class a_Dao<T> implements Dao<T> {
 
     /**
      * метод получения коллекций col (flights, либо bookings) из файлов.  Имена файлов задаются параметром filename:
-     * @param filename
-     * @return
      */
     public boolean retrieveAll(String filename) {
         try (FileInputStream fis = new FileInputStream(filename);
@@ -60,40 +51,13 @@ public abstract class a_Dao<T> implements Dao<T> {
         return true;
     }
 
-    public T retrieveById(int id) {
-        T t = null;
-        return t;
-    }
-
-    ;
-
     public boolean updateById(int id) {
         return false;
     }
-
-    ;
 
     public boolean deleteById(int id) {
         return false;
     }
 
-    ;
-
-    public T findAll() {
-        T t = null;
-        return t;
-    }
-
-    ;
-
-    public T findById(int id) {
-        T t = null;
-        return t;
-    }
-
-    ;
-
-    protected class T {
-    }
 }
 
