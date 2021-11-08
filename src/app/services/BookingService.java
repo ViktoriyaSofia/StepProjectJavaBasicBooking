@@ -1,5 +1,7 @@
 package app.services;
 
+import app.dao.BookingDaoFile;
+import app.dao.a_Dao;
 import app.domain.booking.Booking;
 import app.domain.booking.Passenger;
 
@@ -8,10 +10,16 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookingService {
-    public BookingService(){}
+public class BookingService{
+    public final BookingDaoFile dao;
+    public BookingService(BookingDaoFile dao){
+        this.dao = dao;
+    }
 
-    public static List<Passenger> createDefaultBooking() {
+    /**
+     * Генератор тестовых пассажиров для одного букинга:
+     */
+    public static List<Passenger> createDefaultBookingList() {
         return  new ArrayList<>(List.of(
                 new Passenger("Ivan", "Petrov"),
                 new Passenger("Pineloppa", "Zdurovskaya"),
@@ -21,6 +29,11 @@ public class BookingService {
 
     }
 
+
+
+    /**
+     * Это основной метод создания резервирований (booking):
+     */
     public Booking createNewBooking(int flightID, List<Passenger> passenger) {
         Booking b = new Booking(flightID, "LA",
                 LocalDate.of(2021, 11, 30), 2);
@@ -30,4 +43,5 @@ public class BookingService {
         System.out.println(b);
         return b;
     }
+
 }
