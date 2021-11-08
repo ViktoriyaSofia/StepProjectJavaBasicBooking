@@ -1,26 +1,25 @@
 package com.booking.app.domain.flight;
 
+import java.util.*;
 import com.booking.app.domain.dateMethods.DateMethods;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class FlightGenerator {
 
-//  Метод generateFlightCollection() - генерирует и возвращает коллекцию рейсов List<Flight> flightCollection в кол-ве numberOfFlights
-    public static List<Flight> generateFlightCollection(int numberOfFlights){
+    //  Метод generateFlightCollection() - генерирует и возвращает коллекцию рейсов List<Flight> flightCollection в кол-ве numberOfFlights
+    public static List<Flight> generateFlightCollection(int numberOfFlights, int forNextNumberDays){
         List<Flight> flightCollection = new ArrayList<>();
         int count = 0;
         while (count < numberOfFlights){
-            int flightID = generateInteger(1000, 10000);
+            int flightID = generateInteger(1000, 9000);
 
             String destination = generateDestination();
 
-            long dateSeconds = generateLocalDateTime(3);
+            long dateSeconds = generateLocalDateTime(forNextNumberDays);
 
             int totalPlaces = 20;
 
-            int soldPlaces = generateInteger(0, 20);
+            int soldPlaces = generateInteger(0, 21);
 
             Flight flight = new Flight(flightID, destination, dateSeconds, totalPlaces, soldPlaces);
             flightCollection.add(flight);
@@ -30,7 +29,7 @@ public class FlightGenerator {
     }
 
 
-//  Метод generateDestination() - генерирует и возвращает Destination - город направления рейса
+    //  Метод generateDestination() - генерирует и возвращает Destination - город направления рейса
     private static String generateDestination(){
         String[] destinationCities = {
                 "New York City", "Chicago", "Dallas", "Atlanta", "Miami",
@@ -38,7 +37,7 @@ public class FlightGenerator {
                 "Berlin", "Hamburg", "München", "Köln", "Frankfurt",
                 "Paris", "Marseille", "Lyon", "Toulouse", "Nice",
                 "Melbourne", "Sydney", "Brisbane", "Perth", "Adelaide",
-                "Athens", "Thessaloniki ", "Piraeus", "Larissa", "Heraklion",
+                "Athens", "Thessaloniki", "Piraeus", "Larissa", "Heraklion",
                 "Istanbul", "Ankara", "İzmir", "Bursa", "Antalya",
                 "Tokyo", "Yokohama", "Osaka", "Nagoya", "Kyoto",
                 "Hong Kong", "Macau", "Beijing", "Tianjin", "Chaohu",
@@ -49,17 +48,17 @@ public class FlightGenerator {
     }
 
 
-//  Метод generateInteger() - генерирует и возвращает целое число oт min до max
+    //  Метод generateInteger() - генерирует и возвращает целое число oт min до max
     private static int generateInteger(int min, int max){
         return (int) (min + (Math.random() * max));
     }
 
 
-//  Метод generateLocalDateTime() - генерирует и возвращает long epochSecondOfDay
-//  в период [от текущей LocalDateTime.now() до LocalDateTime.now() + принятое кол-во дней]
+    //  Метод generateLocalDateTime() - генерирует и возвращает long epochSecondOfDay
+    //  в период [от текущей LocalDateTime.now() до LocalDateTime.now() + принятое кол-во дней]
     private static long generateLocalDateTime(int days){
         DateMethods dateMethods = new DateMethods();
-      return dateMethods.generateLocalDateTime(days);
+        return dateMethods.generateLocalDateTime(days);
     }
 
 }
