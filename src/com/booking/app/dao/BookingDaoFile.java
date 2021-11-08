@@ -1,0 +1,28 @@
+package com.booking.app.dao;
+
+import com.booking.app.domain.booking.Booking;
+
+public class BookingDaoFile extends a_Dao<Booking> {
+
+    public BookingDaoFile(){
+        super("./src/com.booking.app/DB/booking.bin");
+    }
+
+    public Booking retrieveById(int id) {
+        Booking b = null;
+        return b;
+    }
+    public Booking findAll() {
+        Booking t = null;
+        return t;
+    }
+
+    public Booking findById(int id) {
+        Booking t = null;
+        return t;
+    }
+
+
+
+
+}
