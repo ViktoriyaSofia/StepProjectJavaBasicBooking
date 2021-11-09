@@ -17,8 +17,11 @@ public abstract class a_Dao<T> implements Dao<T> {
      * saveAll()  получает список itemsList (это flights или bookings), копирует в col,
      * и вызывается метод дао saveAll() сохранения col. в файл
      */
-    public boolean saveAll(){
+    public boolean saveAll(List<T> itemsList){
+        col.clear();
+        col.addAll(itemsList);
         boolean success = writeToFile();
+        col.clear();
         if (success) {
             System.out.println("all items saved");
             return true;
@@ -48,6 +51,7 @@ public abstract class a_Dao<T> implements Dao<T> {
             try (FileInputStream fis = new FileInputStream(fileName);
                  ObjectInputStream ois = new ObjectInputStream(fis);)
             {
+                col.clear();
                 col.addAll( (List<T>)ois.readObject() );
             } catch (ClassNotFoundException e) {
                 System.out.println("ClassNotFoundException");

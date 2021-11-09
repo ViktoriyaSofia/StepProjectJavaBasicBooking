@@ -8,6 +8,6 @@ public interface Dao<T> {
     boolean deleteById(int id);
     T findAll();
     T findById(int id);
-    boolean saveAll();
+    boolean saveAll(List<T> itemsList);
     List<T> retrieveAll();
 }

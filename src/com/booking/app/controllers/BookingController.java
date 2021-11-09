@@ -5,6 +5,7 @@ import com.booking.app.domain.booking.Passenger;
 import com.booking.app.services.BookingService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,36 +19,42 @@ public class BookingController {
     public void bookingInit() {
 
         //retrieving bookings from a DB file:
-        List<Booking> storedBookings = bs.dao.retrieveAll(); //ВНИМАНИЕ! storedBookings теперь ссылается на dao.col !!!
+        List<Booking> storedBookings = Collections.unmodifiableList(bs.dao.retrieveAll());
         System.out.println("из файла считано:  " + storedBookings.size() + " bookings.");
         List<Passenger> pL1 = BookingService.createPl1();
         List<Passenger> pL2 = BookingService.createPl2();
         Booking newBooking1 = bs.createNewBooking(15, pL1);
         Booking newBooking2 = bs.createNewBooking(27, pL2);
 
-        storedBookings.add(newBooking1);
-        storedBookings.add(newBooking2);
+        List<Booking> updatedBookings = new ArrayList<>(storedBookings);
+        updatedBookings.add(newBooking1);
+        updatedBookings.add(newBooking2);
 
-        bs.dao.saveAll();
-        System.out.println("В файл записано: " + storedBookings.size() + " bookings.");
+        bs.dao.saveAll(new ArrayList<>(updatedBookings));
+        System.out.println("В файл записано: " + updatedBookings.size() + " bookings.");
     }
 
     public void bookingMethodsDemo(){
-//        printBookingsOfPineloppaZdurovskaya("Pineloppa", "Zdurovskaya");
-        deleteBookingById();
+        printBookingOfPineloppa("Pineloppa", "Zdurovskaya");
+        deleteBookingById(0);
+//        printBookingOfPineloppa("Pineloppa", "Zdurovskaya");
+//        printAllBookings();
     }
 
-    public void printBookingsOfPineloppaZdurovskaya(String name, String lName){
+    public void printBookingOfPineloppa(String name, String lName){
         Optional<List<Booking>> bOpt= bs.getAllBookingsByPassangerName(name, lName);
-        if (bOpt.isPresent()) {
-            System.out.println("This person has at least one booking. See details below:");
+        if (bOpt.isPresent() && bOpt.get().size() != 0) {
+            System.out.println("This passenger has the following booking(s):");
             System.out.println(bOpt.get());
         } else {
             System.out.println("This person does not have any bookings yet");
         }
     }
-    public void deleteBookingById(){
-        bs.cancelBookingById(3);
+    public void deleteBookingById(int bookingId){
+        bs.cancelBookingById(bookingId);
     }
 
+    public void printAllBookings(){
+        System.out.println("All pending bookings: " + bs.dao.retrieveAll());
+    }
 }

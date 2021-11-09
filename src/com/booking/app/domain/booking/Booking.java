@@ -6,7 +6,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Booking implements Serializable {
+public class Booking implements Serializable, Cloneable {
+
     private static int bookingIDCounter;
 
 
@@ -35,7 +36,7 @@ static {bookingIDCounter = 0;}
                 "\t destination:\t" + this.dest +
                 "\t date:\t" + date.format(DateTimeFormatter.ofPattern("dd:MM:yyyy")) +
                 "\t booked " + seats + " seats in this booking.\n" +
-                "-> Passengers:\n" + pL;
+                "-> Passengers:\n" + pL + "\n";
     }
 
     public int getFlightID() {
@@ -71,4 +72,17 @@ static {bookingIDCounter = 0;}
     }
 
     public int getBookingID(){return this.bookingID;}
+
+
+
+    @Override
+    public Booking clone() {
+        try {
+            Booking clone = (Booking) super.clone();
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
 }

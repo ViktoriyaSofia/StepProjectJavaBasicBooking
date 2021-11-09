@@ -7,6 +7,7 @@ import com.booking.app.domain.flight.Flight;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -47,18 +48,12 @@ public class BookingService {
     }
 
     public void cancelBookingById(int id) {
-        List<Booking> bL = dao.retrieveAll();
-        System.out.println("number of bookings before delition: " + bL.size());
-        List<Booking> newBL = bL.stream().filter(el -> {
-            System.out.println("processing booking number: " + el.getBookingID());
-            return el.getBookingID() != id;
-        }).collect(Collectors.toList());
-//        List<Booking> newBL = bL.stream().filter(el -> el.getBookingID() != id).collect(Collectors.toList());
-        bL = newBL; //перезапись ссылки bL обязательна, т.к. bL постоянно ссылается на dao.col,
-        // который будет считан в файл по dao.saveAll() ниже:
-        dao.saveAll();
-        System.out.println("booking number " + id + "removed");
-        System.out.println("number of bookings after delition: " + newBL.size());
+        List<Booking> bL = Collections.unmodifiableList(dao.retrieveAll());
+//        System.out.println("number of bookings before delition: " + bL.size());
+        List<Booking> newBL = bL.stream().filter(el -> el.getBookingID() != id).collect(Collectors.toList());
+        dao.saveAll(newBL);
+        System.out.println("booking number " + id + " removed");
+        System.out.println("number of bookings after deletion: " + newBL.size());
     }
 
     /**
@@ -67,8 +62,8 @@ public class BookingService {
      * getAllBookingsByPassangerName("Иван", "Петров").get(0).getFlightID
      */
     public Optional<List<Booking>> getAllBookingsByPassangerName(String name, String lastName) {
-        List<Booking> bL = dao.retrieveAll();
-        List<Booking> updatedL =  bL.stream().flatMap(el -> {
+        List<Booking> pendingBookings = Collections.unmodifiableList(dao.retrieveAll());
+        List<Booking> updatedL =  pendingBookings.stream().flatMap(el -> {
                     List<Passenger> locaPassangerlList = el.getpL();
                     if (
                             locaPassangerlList.stream().anyMatch(passanger -> {
