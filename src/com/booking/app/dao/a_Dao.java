@@ -18,7 +18,7 @@ public abstract class a_Dao<T> implements Dao<T> {
      * и вызывается метод дао saveAll() сохранения col. в файл
      */
     public boolean saveAll(List<T> itemsList){
-        col.addAll(itemsList);
+//        col.addAll(itemsList);
         boolean success = writeToFile();
         if (success) {
             System.out.println("all items saved");
@@ -46,18 +46,16 @@ public abstract class a_Dao<T> implements Dao<T> {
      * метод получения коллекций col (flights, либо bookings) из файлов.  Имена файлов задаются параметром filename:
      */
     public List<T> retrieveAll() {
-        try (FileInputStream fis = new FileInputStream(fileName);
-             ObjectInputStream ois = new ObjectInputStream(fis);
-        ) {
-            try {
+            try (FileInputStream fis = new FileInputStream(fileName);
+                 ObjectInputStream ois = new ObjectInputStream(fis);)
+            {
                 col.addAll( (List<T>)ois.readObject() );
             } catch (ClassNotFoundException e) {
                 System.out.println("ClassNotFoundException");
-            }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+            } catch (IOException e) {
+            System.out.println("IOException");
         }
-        return col;
+        return col; //вне зависимости от успешности считывания файла (есть он или нет) - коллекция col должна существовать ,хоть и пустая!
     }
 
     /**

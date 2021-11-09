@@ -22,14 +22,17 @@ public class BookingService {
     /**
      * Генератор тестовых пассажиров для одного букинга:
      */
-    public static List<Passenger> createDefaultBookingList() {
+    public static List<Passenger> createPl1() {
         return new ArrayList<>(List.of(
                 new Passenger("Ivan", "Petrov"),
-                new Passenger("Pineloppa", "Zdurovskaya"),
+                new Passenger("Pineloppa", "Zdurovskaya")
+        ));
+    }
+    public static List<Passenger> createPl2() {
+        return new ArrayList<>(List.of(
                 new Passenger("Armageddon", "Fioletovich"),
                 new Passenger("Nelya", "Sidorova")
         ));
-
     }
 
     /**
@@ -40,15 +43,20 @@ public class BookingService {
                 LocalDate.of(2021, 11, 30), 2);
 //              LocalDate.parse("20:09:2021", DateTimeFormatter.ofPattern("dd:MM:yyyy");
         b.setpL(passenger);
-        System.out.println("a new booking's just been created: ");
-        System.out.println(b);
         return b;
     }
 
     public void cancelBookingById(int id) {
         List<Booking> bL = dao.retrieveAll();
-        List<Booking> newBL = bL.stream().filter(el -> el.bookingID != id).collect(Collectors.toList());
+        System.out.println("number of bookings before delition: " + bL.size());
+        List<Booking> newBL = bL.stream().filter(el -> {
+            System.out.println("processing booking number: " + el.getBookingID());
+            return el.getBookingID() != id;
+        }).collect(Collectors.toList());
+//        List<Booking> newBL = bL.stream().filter(el -> el.getBookingID() != id).collect(Collectors.toList());
         dao.saveAll(newBL);
+        System.out.println("booking number " + id + "removed");
+        System.out.println("number of bookings before delition: " + newBL.size());
     }
 
     /**

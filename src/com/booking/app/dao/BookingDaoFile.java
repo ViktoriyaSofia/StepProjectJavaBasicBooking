@@ -1,11 +1,12 @@
 package com.booking.app.dao;
 
+import com.booking.app.App;
 import com.booking.app.domain.booking.Booking;
 
 public class BookingDaoFile extends a_Dao<Booking> {
 
     public BookingDaoFile(){
-        super("./src/com.booking.app/DB/booking.bin");
+        super(App.BOOKING_FILE_PATH_NAME);
     }
 
     public Booking retrieveById(int id) {

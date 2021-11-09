@@ -13,7 +13,7 @@ public class Passenger implements Serializable {
 
     @Override
     public String toString(){
-        return "\t\tname: " + name + "\t last name: " + lName;
+        return "\n\t\tname: " + name + "\t last name: " + lName;
     }
 
     public String getName() {

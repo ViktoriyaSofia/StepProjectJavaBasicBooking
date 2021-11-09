@@ -69,4 +69,6 @@ static {bookingIDCounter = 0;}
     public void setSeats(int seats) {
         this.seats = seats;
     }
+
+    public int getBookingID(){return this.bookingID;}
 }
