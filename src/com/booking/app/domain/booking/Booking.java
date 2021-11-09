@@ -11,7 +11,7 @@ public class Booking implements Serializable {
 
 
     private int flightID;
-    private final int bookingID;
+    public final int bookingID;
     private List<Passenger> pL = new ArrayList<>();
     private final String dest;
     private final LocalDate date;
@@ -25,7 +25,7 @@ static {bookingIDCounter = 0;}
         this.dest = dest;
         this.date = date;
         this.seats = seats;
-        bookingID = bookingIDCounter++;
+        this.bookingID = bookingIDCounter++;
     }
 
     @Override
