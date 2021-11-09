@@ -58,7 +58,7 @@ public class BookingService {
      */
     public Optional<List<Booking>> getAllBookingsByPassangerName(String name, String lastName) {
         List<Booking> bL = dao.retrieveAll();
-        return Optional.of(bL.stream().flatMap(el -> {
+        List<Booking> updatedL =  bL.stream().flatMap(el -> {
                     List<Passenger> locaPassangerlList = el.getpL();
                     if (
                             locaPassangerlList.stream().anyMatch(passanger -> {
@@ -71,7 +71,8 @@ public class BookingService {
                         return Stream.empty();
                     }
 
-                }).collect(Collectors.toList())
-        );  // закрытие return Optional
+                }).collect(Collectors.toList());
+
+        return Optional.of(updatedL);
     }
 }
