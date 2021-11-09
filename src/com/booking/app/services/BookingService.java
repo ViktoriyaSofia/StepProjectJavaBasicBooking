@@ -54,9 +54,11 @@ public class BookingService {
             return el.getBookingID() != id;
         }).collect(Collectors.toList());
 //        List<Booking> newBL = bL.stream().filter(el -> el.getBookingID() != id).collect(Collectors.toList());
-        dao.saveAll(newBL);
+        bL = newBL; //перезапись ссылки bL обязательна, т.к. bL постоянно ссылается на dao.col,
+        // который будет считан в файл по dao.saveAll() ниже:
+        dao.saveAll();
         System.out.println("booking number " + id + "removed");
-        System.out.println("number of bookings before delition: " + newBL.size());
+        System.out.println("number of bookings after delition: " + newBL.size());
     }
 
     /**

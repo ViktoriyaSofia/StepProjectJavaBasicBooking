@@ -25,17 +25,16 @@ public class BookingController {
         Booking newBooking1 = bs.createNewBooking(15, pL1);
         Booking newBooking2 = bs.createNewBooking(27, pL2);
 
-        //след.добавления делать НЕ НАДО, т.к. storedBookings является ссылкой на dao.col !
-        storedBookings.add(newBooking1);    storedBookings.add(newBooking2);
+        storedBookings.add(newBooking1);
+        storedBookings.add(newBooking2);
 
-        System.out.println("перед записью в файл: " + storedBookings.size() + " bookings.");
-        bs.dao.saveAll(new ArrayList<>(storedBookings));
+        bs.dao.saveAll();
         System.out.println("В файл записано: " + storedBookings.size() + " bookings.");
     }
 
     public void bookingMethodsDemo(){
 //        printBookingsOfPineloppaZdurovskaya("Pineloppa", "Zdurovskaya");
-//        deleteBookingById();
+        deleteBookingById();
     }
 
     public void printBookingsOfPineloppaZdurovskaya(String name, String lName){

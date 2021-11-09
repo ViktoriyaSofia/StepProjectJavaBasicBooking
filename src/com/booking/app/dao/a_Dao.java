@@ -17,8 +17,7 @@ public abstract class a_Dao<T> implements Dao<T> {
      * saveAll()  получает список itemsList (это flights или bookings), копирует в col,
      * и вызывается метод дао saveAll() сохранения col. в файл
      */
-    public boolean saveAll(List<T> itemsList){
-//        col.addAll(itemsList);
+    public boolean saveAll(){
         boolean success = writeToFile();
         if (success) {
             System.out.println("all items saved");
