@@ -19,7 +19,7 @@ public class BookingController {
     public void bookingInit() {
 
         //retrieving bookings from a DB file:
-        List<Booking> storedBookings = Collections.unmodifiableList(bs.dao.retrieveAll());
+        List<Booking> storedBookings = Collections.unmodifiableList(bs.dao.getAll());
         System.out.println("из файла считано:  " + storedBookings.size() + " bookings.");
         List<Passenger> pL1 = BookingService.createPl1();
         List<Passenger> pL2 = BookingService.createPl2();
@@ -55,6 +55,6 @@ public class BookingController {
     }
 
     public void printAllBookings(){
-        System.out.println("All pending bookings: " + bs.dao.retrieveAll());
+        System.out.println("All pending bookings: " + bs.dao.getAll());
     }
 }

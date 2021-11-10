@@ -3,7 +3,6 @@ package com.booking.app.services;
 import com.booking.app.dao.BookingDaoFile;
 import com.booking.app.domain.booking.Booking;
 import com.booking.app.domain.booking.Passenger;
-import com.booking.app.domain.flight.Flight;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -48,7 +47,7 @@ public class BookingService {
     }
 
     public void cancelBookingById(int id) {
-        List<Booking> bL = Collections.unmodifiableList(dao.retrieveAll());
+        List<Booking> bL = Collections.unmodifiableList(dao.getAll());
 //        System.out.println("number of bookings before delition: " + bL.size());
         List<Booking> newBL = bL.stream().filter(el -> el.getBookingID() != id).collect(Collectors.toList());
         dao.saveAll(newBL);
@@ -62,7 +61,7 @@ public class BookingService {
      * getAllBookingsByPassangerName("Иван", "Петров").get(0).getFlightID
      */
     public Optional<List<Booking>> getAllBookingsByPassangerName(String name, String lastName) {
-        List<Booking> pendingBookings = Collections.unmodifiableList(dao.retrieveAll());
+        List<Booking> pendingBookings = Collections.unmodifiableList(dao.getAll());
         List<Booking> updatedL =  pendingBookings.stream().flatMap(el -> {
                     List<Passenger> locaPassangerlList = el.getpL();
                     if (

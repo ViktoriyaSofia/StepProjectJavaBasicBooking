@@ -47,7 +47,7 @@ public abstract class a_Dao<T> implements Dao<T> {
     /**
      * метод получения коллекций col (flights, либо bookings) из файлов.  Имена файлов задаются параметром filename:
      */
-    public List<T> retrieveAll() {
+    public List<T> getAll() {
             try (FileInputStream fis = new FileInputStream(fileName);
                  ObjectInputStream ois = new ObjectInputStream(fis);)
             {
@@ -61,23 +61,12 @@ public abstract class a_Dao<T> implements Dao<T> {
         return col; //вне зависимости от успешности считывания файла (есть он или нет) - коллекция col должна существовать ,хоть и пустая!
     }
 
-    /**
-     * метод создает очередную новую запись объекта типа Т. Аргументом метода является либо
-     * flight, либо booking.
-     * Вызов метода в контроллере выполняется не через .dao , а через абстрактный  .a_dao , т.к. в интерфейсе не возможна типизация дженериком
-     */
-    public boolean createOne(T t) {
-        col.add(t);
-        return true;
-    }
 
-    public boolean updateById(int id) {
-        return false;
-    }
+   public T getByIndex(int index){};
+   public T delete(int index){};
+   public boolean delete(T obj){};
+   public T save (T obj){};
 
-    public boolean deleteById(int id) {
-        return false;
-    }
 
 }
 

@@ -3,11 +3,11 @@ package com.booking.app.dao;
 import java.util.List;
 
 public interface Dao<T> {
-    T retrieveById(int id);
-    boolean updateById(int id);
-    boolean deleteById(int id);
-    T findAll();
-    T findById(int id);
+    T getById(int id);
+    List<T> getAll();
     boolean saveAll(List<T> itemsList);
-    List<T> retrieveAll();
+    T getByIndex(int index);
+    T delete(int index);
+    boolean delete(T obj);
+    T save (T obj);
 }
