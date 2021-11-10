@@ -5,7 +5,7 @@ import com.booking.app.domain.flight.Flight;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FlightDao implements MainDao<Flight>{
+public class FlightDao extends a_Dao<Flight>{
     private final List<Flight> flights = new ArrayList<>();
 
 
