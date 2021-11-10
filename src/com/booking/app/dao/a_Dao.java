@@ -77,5 +77,8 @@ public abstract class a_Dao<T> implements Dao<T> {
         T var = null;
         return var;
     }
+    public List<T> getCollectionFromDB() throws IOException{
+        return new ArrayList<T>();
+    };
 }
 
