@@ -8,8 +8,10 @@ public abstract class a_Dao<T> implements Dao<T> {
     List<T> col = new ArrayList<T>();
     String fileName;
 
-    public a_Dao(){}
-    public a_Dao(String fileName){
+    public a_Dao() {
+    }
+
+    public a_Dao(String fileName) {
         this.fileName = fileName;
     }
 
@@ -17,7 +19,7 @@ public abstract class a_Dao<T> implements Dao<T> {
      * saveAll()  получает список itemsList (это flights или bookings), копирует в col,
      * и вызывается метод дао saveAll() сохранения col. в файл
      */
-    public boolean saveAll(List<T> itemsList){
+    public boolean saveAll(List<T> itemsList) {
         col.clear();
         col.addAll(itemsList);
         boolean success = writeToFile();
@@ -48,25 +50,32 @@ public abstract class a_Dao<T> implements Dao<T> {
      * метод получения коллекций col (flights, либо bookings) из файлов.  Имена файлов задаются параметром filename:
      */
     public List<T> getAll() {
-            try (FileInputStream fis = new FileInputStream(fileName);
-                 ObjectInputStream ois = new ObjectInputStream(fis);)
-            {
-                col.clear();
-                col.addAll( (List<T>)ois.readObject() );
-            } catch (ClassNotFoundException e) {
-                System.out.println("ClassNotFoundException");
-            } catch (IOException e) {
+        try (FileInputStream fis = new FileInputStream(fileName);
+             ObjectInputStream ois = new ObjectInputStream(fis);) {
+            col.clear();
+            col.addAll((List<T>) ois.readObject());
+        } catch (ClassNotFoundException e) {
+            System.out.println("ClassNotFoundException");
+        } catch (IOException e) {
             System.out.println("IOException");
         }
         return col; //вне зависимости от успешности считывания файла (есть он или нет) - коллекция col должна существовать ,хоть и пустая!
     }
 
-
-   public T getByIndex(int index){};
-   public T delete(int index){};
-   public boolean delete(T obj){};
-   public T save (T obj){};
-
-
+    public T getByIndex(int index) {
+        T var = null;
+        return var;
+    }
+    public T delete(int index) {
+        T var = null;
+        return var;
+    }
+    public boolean delete(T obj) {
+        return false;
+    }
+    public T save(T obj) {
+        T var = null;
+        return var;
+    }
 }
 
