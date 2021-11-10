@@ -1,6 +1,6 @@
-package com.booking.app.domain.console.consoleController;
+package app.domain.console.consoleController;
 
-import com.booking.app.domain.console.wrongInputDataException.WrongInputDataException;
+import app.exceptions.WrongInputDataException;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;

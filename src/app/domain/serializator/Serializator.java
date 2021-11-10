@@ -1,4 +1,4 @@
-package com.booking.app.domain.serializator;
+package app.domain.serializator;
 
 import java.io.*;
 import java.util.ArrayList;

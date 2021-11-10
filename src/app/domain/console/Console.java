@@ -1,10 +1,8 @@
-package com.booking.app.domain.console;
+package app.domain.console;
 
-import com.booking.app.domain.console.consoleController.ConsoleController;
-import com.booking.app.domain.console.wrongInputDataException.WrongInputDataException;
+import app.domain.console.consoleController.ConsoleController;
+import app.exceptions.WrongInputDataException;
 
-import java.io.*;
-import java.time.format.DateTimeParseException;
 import java.util.*;
 
 public class Console {

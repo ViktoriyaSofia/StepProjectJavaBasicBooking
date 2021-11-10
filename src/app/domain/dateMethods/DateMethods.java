@@ -1,4 +1,4 @@
-package com.booking.app.domain.dateMethods;
+package app.domain.dateMethods;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;

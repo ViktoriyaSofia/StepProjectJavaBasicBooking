@@ -1,7 +1,7 @@
-package com.booking.app;
+package app;
 
-import com.booking.app.domain.console.Console;
-import com.booking.app.domain.console.wrongInputDataException.WrongInputDataException;
+import app.domain.console.Console;
+import app.exceptions.WrongInputDataException;
 
 import java.io.IOException;
 

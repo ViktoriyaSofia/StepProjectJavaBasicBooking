@@ -1,4 +1,4 @@
-package com.booking.app.domain.console.wrongInputDataException;
+package app.exceptions;
 
 public class WrongInputDataException extends RuntimeException{
     public static final String ANSI_RED = "\u001B[31m";
