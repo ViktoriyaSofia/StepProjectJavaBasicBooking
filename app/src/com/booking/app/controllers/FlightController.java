@@ -8,6 +8,18 @@ import java.util.List;
 public class FlightController {
     public FlightService flightService;
 
+    public FlightController(FlightService flightService) {
+        this.flightService = flightService;
+    }
+
+    public Flight getFlightById (int id) {
+        return flightService.getFlightById(id);
+    }
+
+    public Flight getFlightByIndex(int index) {
+        return flightService.getFlightByIndex(index);
+    }
+
     public Flight createNewFlight(int flightID, String destination, long dateTime, int totalPlaces, int soldPlaces) {
         return flightService.createNewFlight(flightID, destination, dateTime, totalPlaces, soldPlaces);
     }

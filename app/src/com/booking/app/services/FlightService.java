@@ -1,6 +1,6 @@
 package com.booking.app.services;
 
-import com.booking.app.dao.FlightDao;
+import com.booking.app.dao.FlightDaoFile;
 import com.booking.app.domain.dateMethods.DateMethods;
 import com.booking.app.domain.flight.Flight;
 
@@ -11,34 +11,37 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class FlightService {
-    private final FlightDao flightDao;
+    private final FlightDaoFile flightDao;
 
-    private FlightService(FlightDao flightDao) {
+    public FlightService(FlightDaoFile flightDao) {
         this.flightDao = flightDao;
     }
 
     /** Методы из FlightDao **/
 
+    public List<Flight> getFlightsFromDB () throws IOException {
+        return flightDao.retrieve();
+    }
+
+    public Flight saveFlightToDB (Flight flight) {
+        return flightDao.store(flight);
+    }
+
     public List<Flight> getAllFlights() {
-        return flightDao.getALlCollection();
+        return flightDao.retrieveAll();
     }
-
-    private List<Flight> getFlightCollectionFromDB () throws IOException {
-        return flightDao.getCollectionFromDB();
-    }
-
     public Flight getFlightById(int id) {
-        return flightDao.getById(id);
+        return flightDao.retrieveById(id);
     }
 
     public Flight getFlightByIndex(int index) {
-        return flightDao.getByIndex(index);
+        return flightDao.retrieveByIndex(index);
     }
 
     /** - Создание полёта **/
     public Flight createNewFlight (int id, String destination, long dateTime, int totalPlaces, int soldPlaces) {
         Flight flight = new Flight(id, destination, dateTime, totalPlaces, soldPlaces);
-        return flightDao.saveCollectionToDB(flight);
+        return this.saveFlightToDB(flight);
     }
 
 
@@ -74,7 +77,7 @@ public class FlightService {
                 "Hong Kong", "Macau", "Beijing", "Tianjin", "Chaohu",
                 "Kharkiv", "Odesa", "Dnipro", "Lviv", "Kherson"
         };
-        int randomCity = (int) (Math.random() * destinationCities.length + 1);
+        int randomCity = (int) (Math.random() * destinationCities.length);
         return destinationCities[randomCity];
     }
 
@@ -93,6 +96,7 @@ public class FlightService {
             flights.set(flightIndex, flight);
         }else {
             flights.add(flight);
+            saveFlightToDB(flight);
         }
 
         return flights.indexOf(flight);
