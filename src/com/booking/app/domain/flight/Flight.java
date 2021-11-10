@@ -32,7 +32,7 @@ public class Flight implements Serializable {
         this.availablePlaces = setAvailablePlaces();
     }
 
-//    - принимает строку датаВремя формата "dd/MM/yyyy hh:mm:ss a" ( например: "04/11/2021 03:16:57 PM" или "04/11/2021 03:16:57 AM")
+    //    - принимает строку датаВремя формата "dd/MM/yyyy hh:mm:ss a" ( например: "04/11/2021 03:16:57 PM" или "04/11/2021 03:16:57 AM")
     public Flight(int id, String destination, String dateTime, int totalPlaces, int soldPlaces) {
         this.flightID = id;
         this.destination = destination;
@@ -44,7 +44,7 @@ public class Flight implements Serializable {
         this.availablePlaces = setAvailablePlaces();
     }
 
-//    - принимает строку дата формата "dd/MM/yyyy" ("04/11/2021"), строку время формата "hh:mm:ss a" ("03:16:57 PM") или ("03:16:57 AM")
+    //    - принимает строку дата формата "dd/MM/yyyy" ("04/11/2021"), строку время формата "hh:mm:ss a" ("03:16:57 PM") или ("03:16:57 AM")
     public Flight(int id, String destination, String date, String time, int totalPlaces, int soldPlaces) {
         this.flightID = id;
         this.destination = destination;
@@ -141,24 +141,24 @@ public class Flight implements Serializable {
 
     public String prettyFormatFlight() {
         return "\tFlight: " +
-            "flightID='" + (this.getFlightID() == -1 ? "no info" : this.getFlightID()) + '\'' +
-            ", destination='" + (this.getDestination().equals("") ? "no info" : this.getDestination()) +'\'' +
-            ", dateDeparture='" + (this.getDateSeconds() == -1 ? "no info" : getDateTimeStringFromEpochSecond(this.getDateSeconds())) + '\'' +
-            ", totalPlaces=" + totalPlaces +
-            ", soldPlaces=" + soldPlaces +
-            ", availablePlaces=" + availablePlaces +
-            ";\n";
+                "flightID='" + (this.getFlightID() == -1 ? "no info" : this.getFlightID()) + '\'' +
+                ", destination='" + (this.getDestination().equals("") ? "no info" : this.getDestination()) +'\'' +
+                ", dateDeparture='" + (this.getDateSeconds() == -1 ? "no info" : getDateTimeStringFromEpochSecond(this.getDateSeconds())) + '\'' +
+                ", totalPlaces=" + totalPlaces +
+                ", soldPlaces=" + soldPlaces +
+                ", availablePlaces=" + availablePlaces +
+                ";\n";
     }
 
 
 
-//  Метод generateFlightId() - генерирует и возвращает ID рейса
+    //  Метод generateFlightId() - генерирует и возвращает ID рейса
     private int generateFlightId(){
         return (int) (Math.random() * 9001);
     }
 
 
-//  Методы по конвертированию разных вариантов принятых данных по дате (для конструкторов Flight()) >>>
+    //  Методы по конвертированию разных вариантов принятых данных по дате (для конструкторов Flight()) >>>
     //  Метод getLocalDateTimeToEpochSecondFromStringDateTime()
     //  - принимает строку датаВремя формата "dd/MM/yyyy hh:mm:ss a" (например: "04/11/2021 03:16:57 PM")
     //  - возвращает LocalDateTime date (полученное из принятой строки) в long epochSecondOfDay

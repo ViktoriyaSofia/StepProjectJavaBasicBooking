@@ -2,6 +2,7 @@ package com.booking.app.dao;
 
 import com.booking.app.domain.flight.Flight;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,31 @@ public class FlightDao extends a_Dao<Flight>{
     }
 
     @Override
+    public List<Flight> getCollectionFromDB () throws IOException {
+        List<Flight> flights = new ArrayList<>();
+
+        try (
+                FileInputStream fis = new FileInputStream("flights.txt");
+                ObjectInputStream ois = new ObjectInputStream(fis)
+        ){
+            flights = (List<Flight>) ois.readObject();
+            List<Flight> finalFlights = flights;
+
+            /** здесь должен быть flight.prettyFormat **/
+
+            flights.forEach(flight -> {
+                System.out.println(finalFlights.indexOf(flight) + 1 + ". " + flight.prettyFormatFlight());
+            });
+        }catch (FileNotFoundException | ClassNotFoundException error){
+            error.printStackTrace(System.out);
+        }
+
+        return flights;
+    }
+
+    @Override
     public Flight getById(int id) {
+
         Flight flightById = (Flight) this.flights.stream()
                 .filter(flight -> flight.getFlightID() == id);
 
@@ -30,19 +55,6 @@ public class FlightDao extends a_Dao<Flight>{
         }else return null;
     }
 
-    /** Override delete methods  **/
-    @Override
-    public Flight delete(int index) {
-        if (index >= 0 && index < flights.size()){
-            return this.flights.remove(index);
-        }else return null;
-    }
-
-    @Override
-    public boolean delete(Flight flight) {
-        return this.flights.remove(flight);
-    }
-
     /** Override save method  **/
     @Override
     public Flight save(Flight flight){
@@ -52,6 +64,14 @@ public class FlightDao extends a_Dao<Flight>{
             this.flights.set(flightIndex, flight);
         }else {
             this.flights.add(flight);
+        }
+
+        try(FileOutputStream fos = new FileOutputStream("flights.txt");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);)
+        {
+            oos.writeObject(this.flights);
+        }catch (IOException error){
+            error.printStackTrace(System.out);
         }
 
         return flight;
