@@ -5,7 +5,6 @@ import com.booking.app.domain.dateMethods.DateMethods;
 import com.booking.app.domain.flight.Flight;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
@@ -21,7 +20,7 @@ public class FlightService {
     /** Методы из FlightDao **/
 
     public List<Flight> getAllFlights() {
-        return flightDao.getAll();
+        return flightDao.getALlCollection();
     }
 
     private List<Flight> getFlightCollectionFromDB () throws IOException {
@@ -39,7 +38,7 @@ public class FlightService {
     /** - Создание полёта **/
     public Flight createNewFlight (int id, String destination, long dateTime, int totalPlaces, int soldPlaces) {
         Flight flight = new Flight(id, destination, dateTime, totalPlaces, soldPlaces);
-        return flightDao.save(flight);
+        return flightDao.saveCollectionToDB(flight);
     }
 
 
