@@ -1,6 +1,6 @@
 package app.domain.flight;
 
-import app.domain.dateMethodsw.DateMethods;
+import app.domain.dateMethods.DateMethods;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
