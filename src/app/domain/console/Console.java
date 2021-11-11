@@ -1,7 +1,6 @@
 package app.domain.console;
 
 import app.dao.FlightDaoFile;
-import app.domain.flight.Flight;
 import app.services.FlightService;
 import app.controllers.FlightController;
 

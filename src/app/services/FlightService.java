@@ -56,6 +56,7 @@ public class FlightService {
 
             this.createNewFlight(flightId, destination, date, totalPlaces, soldPlaces);
         }
+
         return this.getAllFlights();
     }
 
