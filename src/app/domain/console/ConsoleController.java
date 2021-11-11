@@ -1,4 +1,4 @@
-package app.domain.console.consoleController;
+package app.domain.console;
 
 import app.exceptions.WrongInputDataException;
 

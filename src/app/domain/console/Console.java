@@ -5,7 +5,6 @@ import app.domain.flight.Flight;
 import app.services.FlightService;
 import app.controllers.FlightController;
 
-import app.domain.console.consoleController.ConsoleController;
 import app.exceptions.WrongInputDataException;
 
 import java.io.*;
