@@ -16,10 +16,5 @@ public class App {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         System.out.println("Welcome to the best flight booking app!");
-
-        flightController.generateFlightDB(10, 30);
-        List<Flight> flights = flightController.getAllFlights();
-        flightController.getFlightsFromDB();
-        flightController.showFlightsCollection(flights);
     }
 }
