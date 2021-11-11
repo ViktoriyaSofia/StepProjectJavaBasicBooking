@@ -27,7 +27,7 @@ public class Console {
 
         if(sizeFlightCollection == 0){
             System.out.println(">>> Generating Flight Collection!");
-            flightController.generateFlightDB(500, 30);
+            flightController.generateFlightDB(1000, 30);
             System.out.println("New Flight Collection contains " + flightController.getAllFlights().size() + " flights");
         }
 
@@ -109,7 +109,7 @@ public class Console {
     private void showOnlineFlightsScoreboard(){
         System.out.println("\n>>> View the flights from Kiev in the next 24 hours");
         System.out.println("\nThe Online Scoreboard Flight:");
-        flightController.showFlightsCollection(flightController.getFlightsInOneDayPeriod());
+        flightController.showFlightsCollection(flightController.sortFlightsByDestination(flightController.getFlightsInOneDayPeriod()));
     }
 
 
@@ -161,7 +161,7 @@ public class Console {
         if(foundFlights.size() > 0){
             System.out.printf("\nFound Flights to %s, on date %s, with the required number (%d) of available tickets: \n",
                     destinationStr, dateStr, ticketsNumber);
-            flightController.showFlightsCollection(foundFlights);
+            flightController.showFlightsCollection(flightController.sortFlightsByDate(foundFlights));
             System.out.println();
 
             int listSize = foundFlights.size();
@@ -270,13 +270,13 @@ public class Console {
         String surName = "", name = "";
 
         while (name.equals("")){
-            System.out.printf("Enter the Name of passenger, required: [characters only] >>> ");
+            System.out.print("Enter the Name of passenger, required: [characters only] >>> ");
             name = consoleController.checkInputDataChars(scanner.nextLine().toLowerCase());
         }
         name = consoleController.toUpperCaseFirstLetterEachWorld(name);
 
         while (surName.equals("")){
-            System.out.printf("Enter the Last Name of passenger, required: [characters only] >>> ");
+            System.out.print("Enter the Last Name of passenger, required: [characters only] >>> ");
             surName = consoleController.checkInputDataChars(scanner.nextLine().toLowerCase());
         }
         surName = consoleController.toUpperCaseFirstLetterEachWorld(surName);
