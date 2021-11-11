@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Flight implements Serializable {
-    private int flightID;
+    private int flightID = -1;
     private String destination = "";
     private long dateSeconds = -1;
     private String date = "";
@@ -18,9 +18,7 @@ public class Flight implements Serializable {
     private int availablePlaces = -1;
 
     public Flight(){
-        this.flightID = generateFlightId();
     }
-
     public Flight(int id, String destination, long dateSeconds, int totalPlaces, int soldPlaces) {
         this.flightID = id;
         this.destination = destination;
@@ -29,31 +27,7 @@ public class Flight implements Serializable {
         this.time = getTimeStringFromEpochSecond(dateSeconds);
         this.totalPlaces = totalPlaces;
         this.soldPlaces = soldPlaces;
-        this.availablePlaces = setAvailablePlaces();
-    }
-
-//    - принимает строку датаВремя формата "dd/MM/yyyy hh:mm:ss a" ( например: "04/11/2021 03:16:57 PM" или "04/11/2021 03:16:57 AM")
-    public Flight(int id, String destination, String dateTime, int totalPlaces, int soldPlaces) {
-        this.flightID = id;
-        this.destination = destination;
-        this.dateSeconds = getLocalDateTimeToEpochSecondFromStringDateTime(dateTime);
-        this.date = getDateStringFromEpochSecond(this.dateSeconds);;
-        this.time = getTimeStringFromEpochSecond(this.dateSeconds);;
-        this.totalPlaces = totalPlaces;
-        this.soldPlaces = soldPlaces;
-        this.availablePlaces = setAvailablePlaces();
-    }
-
-//    - принимает строку дата формата "dd/MM/yyyy" ("04/11/2021"), строку время формата "hh:mm:ss a" ("03:16:57 PM") или ("03:16:57 AM")
-    public Flight(int id, String destination, String date, String time, int totalPlaces, int soldPlaces) {
-        this.flightID = id;
-        this.destination = destination;
-        this.dateSeconds = getLocalDateTimeToEpochSecondFromDateTimeStrings(date, time);
-        this.date = date;
-        this.time = time;
-        this.totalPlaces = totalPlaces;
-        this.soldPlaces = soldPlaces;
-        this.availablePlaces = setAvailablePlaces();
+        setAvailablePlaces();
     }
 
     public int getFlightID() {
@@ -108,8 +82,8 @@ public class Flight implements Serializable {
     public int getAvailablePlaces() {
         return availablePlaces;
     }
-    public int setAvailablePlaces() {
-        return getTotalPlaces() - getSoldPlaces();
+    public void setAvailablePlaces() {
+        this.availablePlaces = this.getTotalPlaces() - this.getSoldPlaces();
     }
 
 
@@ -139,44 +113,25 @@ public class Flight implements Serializable {
                 '}';
     }
 
-    public String prettyFormatFlight() {
-        return "\tFlight: " +
-            "flightID='" + (this.getFlightID() == -1 ? "no info" : this.getFlightID()) + '\'' +
-            ", destination='" + (this.getDestination().equals("") ? "no info" : this.getDestination()) +'\'' +
-            ", dateDeparture='" + (this.getDateSeconds() == -1 ? "no info" : getDateTimeStringFromEpochSecond(this.getDateSeconds())) + '\'' +
-            ", totalPlaces=" + totalPlaces +
-            ", soldPlaces=" + soldPlaces +
-            ", availablePlaces=" + availablePlaces +
-            ";\n";
+    public void prettyFormatFlight() {
+        String format = "%-22s%-30s%s%n";
+        String flight = "\tFlight: " + " ID='" + (this.getFlightID() == -1 ? "no info" : this.getFlightID()) + "'";
+        String destination = "destination='" + (this.getDestination().equals("") ? "no info" : this.getDestination()) + "'";
+        String dateDeparture =  "dateDeparture='" + (this.getDateSeconds() == -1 ? "no info"
+                : getDateTimeStringFromEpochSecond(this.getDateSeconds())) + "'";
+        System.out.printf(format, flight, destination, dateDeparture);
     }
 
-
-
-//  Метод generateFlightId() - генерирует и возвращает ID рейса
-    private int generateFlightId(){
-        return (int) (Math.random() * 9001);
-    }
-
-
-//  Методы по конвертированию разных вариантов принятых данных по дате (для конструкторов Flight()) >>>
-    //  Метод getLocalDateTimeToEpochSecondFromStringDateTime()
-    //  - принимает строку датаВремя формата "dd/MM/yyyy hh:mm:ss a" (например: "04/11/2021 03:16:57 PM")
-    //  - возвращает LocalDateTime date (полученное из принятой строки) в long epochSecondOfDay
-    private long getLocalDateTimeToEpochSecondFromStringDateTime(String dateAndTime){
-        DateMethods dateMethods = new DateMethods();
-        LocalDateTime dateTime = dateMethods.getLocalDateTimeFromStringDateTime(dateAndTime);
-        return dateMethods.convertLocalDateTimeToEpochSecond(dateTime);
-    }
-
-
-    //  Метод getLocalDateTimeToEpochSecondFromDateTimeStrings()
-    //  - принимает строку дата формата "dd/MM/yyyy" ("04/11/2021")
-    //  - принимает строку время формата "hh:mm:ss a" ("03:16:57 PM") или ("03:16:57 AM")
-    //  - возвращает LocalDateTime date(полученное из принятых строк) в long epochSecondOfDay
-    private long getLocalDateTimeToEpochSecondFromDateTimeStrings(String date, String time){
-        DateMethods dateMethods = new DateMethods();
-        LocalDateTime dateTime = dateMethods.getLocalDateTimeFromDateAndTimeStrings(date, time);
-        return dateMethods.convertLocalDateTimeToEpochSecond(dateTime);
+    public void prettyFormatFlightFullInfo() {
+        String format = "%-21s%-26s%-42s%n%-21s%-26s%s%n";
+        String flight = "Flight: " + "ID='" + (this.getFlightID() == -1 ? "no info" : this.getFlightID()) + "'";
+        String destination = "destination='" + (this.getDestination().equals("") ? "no info" : this.getDestination()) + "'";
+        String dateDeparture =  "dateDeparture='" + (this.getDateSeconds() == -1 ? "no info"
+                : getDateTimeStringFromEpochSecond(this.getDateSeconds())) + "'";
+        String totalPlaces = "totalPlaces='" + this.getTotalPlaces() + "'";
+        String soldPlaces = "soldPlaces='" + this.getSoldPlaces() + "'";
+        String availablePlaces = "availablePlaces='" + this.getAvailablePlaces() + "'";
+        System.out.printf(format, flight, destination, dateDeparture, totalPlaces, soldPlaces, availablePlaces);
     }
 
 
