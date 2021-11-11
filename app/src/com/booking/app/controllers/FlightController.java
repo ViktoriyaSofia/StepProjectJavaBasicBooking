@@ -12,6 +12,18 @@ public class FlightController {
         this.flightService = flightService;
     }
 
+    public List<Flight> getFlightsFromDB() throws IOException {
+        return flightService.getFlightsFromDB();
+    }
+
+    public List<Flight> getAllFlights(){
+        return flightService.getAllFlights();
+    }
+
+    public Flight saveFlightToDB (Flight flight){
+        return flightService.saveFlightToDB(flight);
+    }
+
     public Flight getFlightById (int id) {
         return flightService.getFlightById(id);
     }
