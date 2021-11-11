@@ -7,6 +7,9 @@ import com.booking.app.domain.flight.Flight;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -106,6 +109,13 @@ public class FlightService {
     public List<Flight> sortFlightsByDate (List<Flight> flights) {
         return flights.stream()
                 .sorted((f1, f2) -> (int) (f1.getDateSeconds() - f2.getDateSeconds()))
+                .collect(Collectors.toList());
+    }
+
+    public List<Flight> sortFlightsByDestination(List<Flight> flights){
+
+        return flights.stream()
+                .sorted(Comparator.comparing(Flight::getDestination))
                 .collect(Collectors.toList());
     }
 
