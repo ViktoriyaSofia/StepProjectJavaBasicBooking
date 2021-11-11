@@ -17,14 +17,17 @@ public abstract class AbstractDao<T> implements Dao<T> {
 
 
     /** получение коллекций (booking | flight) в зависимости от типа - T и fileName - название файла где лежат эти коллекции **/
-    public List<T> retrieve() throws IOException {
+    public List<T> retrieve()  {
         try (
                 FileInputStream fis = new FileInputStream(fileName);
                 ObjectInputStream ois = new ObjectInputStream(fis)
         ){
             col = (List<T>) ois.readObject();
-        }catch (FileNotFoundException | ClassNotFoundException error){
-            error.printStackTrace(System.out);
+        }catch (ClassNotFoundException error){
+            System.out.println("Клас не найден");
+        }catch (IOException  error){
+            System.out.println("Ошибка при чтении файла booking.bin или flight.bin");
+            System.out.println(error.getMessage());
         }
 
         return col;

@@ -82,7 +82,7 @@ public class FlightService {
         return destinationCities[randomCity];
     }
 
-    private long generateDateTime (int maxDays) {
+    public long generateDateTime (int maxDays) {
         DateMethods dm = new DateMethods();
         return dm.generateLocalDateTime(maxDays);
     }
