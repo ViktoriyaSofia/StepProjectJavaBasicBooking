@@ -1,4 +1,4 @@
-package app.domain.console.wrongInputDataException;
+package app.exceptions.wrongInputDataException;
 
 public class WrongInputDataException extends RuntimeException{
     public static final String ANSI_RED = "\u001B[31m";

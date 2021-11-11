@@ -1,7 +1,7 @@
 package app.domain.console;
 
 import app.domain.console.consoleController.ConsoleController;
-import app.domain.console.wrongInputDataException.WrongInputDataException;
+import app.exceptions.wrongInputDataException.WrongInputDataException;
 
 import java.util.*;
 
