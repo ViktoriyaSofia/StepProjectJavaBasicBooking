@@ -2,22 +2,12 @@ package app.domain.booking;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.UUID;
 
 public class Booking implements Serializable, Cloneable {
-
-    private static int bookingIDCounter;
-    private static void getCounterStartValue(){
-        // обращение в ДАО и получение начального значения счетчика
-        // int counterStart;
-    }
-
-    static {bookingIDCounter = 0;}
 
     private int flightID;
     public final String bookingID;
@@ -29,7 +19,7 @@ public class Booking implements Serializable, Cloneable {
     {
         this.dest = null;
         this.date = null;
-        this.seats = 1;
+        this.seats = -1;
         bookingID = UUID.randomUUID().toString().replace("-", "");
     }
 
@@ -42,11 +32,12 @@ public class Booking implements Serializable, Cloneable {
     }
 
     public Booking(int flightID, List<Passenger> pL){
-        this();
+
         this.flightID = flightID;
         this.pL = pL.stream().collect(Collectors.toList());
     }
     public Booking(int flightID, String dest, LocalDate date, List<Passenger> pL) {
+        this();
         this.flightID = flightID;
         this.dest = dest;
         this.date = date;
