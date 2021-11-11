@@ -17,7 +17,7 @@ public abstract class AbstractDao<T> implements Dao<T> {
 
 
     /** получение коллекций (booking | flight) в зависимости от типа - T и fileName - название файла где лежат эти коллекции **/
-    public List<T> retrieve() throws IOException {
+    public List<T> retrieve(){
         try (
                 FileInputStream fis = new FileInputStream(fileName);
                 ObjectInputStream ois = new ObjectInputStream(fis)

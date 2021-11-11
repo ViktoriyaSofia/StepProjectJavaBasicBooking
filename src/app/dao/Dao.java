@@ -4,6 +4,6 @@ import java.io.IOException;
 import java.util.List;
 
 public interface Dao<T> {
-    List<T> retrieve() throws IOException;
+    List<T> retrieve();
     T store(T obj);
 }

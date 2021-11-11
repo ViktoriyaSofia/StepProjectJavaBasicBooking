@@ -2,3 +2,5 @@
 *.iml
 *.xml
 /flights.bin
+*.md
+/mentor_instructions/
