@@ -110,6 +110,13 @@ public class FlightService {
                 .collect(Collectors.toList());
     }
 
+    public List<Flight> sortFlightsByDestination(List<Flight> flights){
+
+        return flights.stream()
+                .sorted(Comparator.comparing(Flight::getDestination))
+                .collect(Collectors.toList());
+    }
+
     /** Получение полётов в течении 24 часов и их стортировка **/
     public List<Flight> getFlightsInOneDayPeriod () {
 
@@ -131,13 +138,6 @@ public class FlightService {
                                 flight.getDate().equals(date) &&
                                 flight.getAvailablePlaces() >= passengers)
                 ).collect(Collectors.toList());
-    }
-
-    public List<Flight> sortFlightsByDestination(List<Flight> flights){
-
-        return flights.stream()
-                .sorted(Comparator.comparing(Flight::getDestination))
-                .collect(Collectors.toList());
     }
 
     //  Выводит в консоль коллекцию рейсов (всю или отфильтрованную часть)
