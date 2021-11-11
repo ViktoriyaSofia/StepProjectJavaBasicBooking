@@ -47,9 +47,9 @@ public class BookingService {
         return b;
     }
 
-    public void cancelBookingById(int id) {
+    public void cancelBookingById(String id) {
         List<Booking> bL = Collections.unmodifiableList(dao.getAll());
-        List<Booking> newBL = bL.stream().filter(el -> el.getBookingID() != id).collect(Collectors.toList());
+        List<Booking> newBL = bL.stream().filter(el -> !el.getBookingID().equals(id)).collect(Collectors.toList());
         dao.saveAll(newBL);
         System.out.println("booking number " + id + " removed");
         System.out.println("number of bookings after deletion: " + newBL.size());

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.UUID;
 
 public class Booking implements Serializable, Cloneable {
 
@@ -19,7 +20,7 @@ public class Booking implements Serializable, Cloneable {
     static {bookingIDCounter = 0;}
 
     private int flightID;
-    public final int bookingID;
+    public final String bookingID;
     private List<Passenger> pL = new ArrayList<>();
     private String dest;
     private LocalDate date;
@@ -29,11 +30,10 @@ public class Booking implements Serializable, Cloneable {
         this.dest = null;
         this.date = null;
         this.seats = 1;
+        bookingID = UUID.randomUUID().toString().replace("-", "");
     }
 
     public Booking(){
-    this.bookingID = bookingIDCounter++;
-//    this.bookingID = counterStart + bookingIDCounter++;
     }
 
     public Booking(int flightID){
@@ -44,25 +44,24 @@ public class Booking implements Serializable, Cloneable {
     public Booking(int flightID, List<Passenger> pL){
         this();
         this.flightID = flightID;
-        Collections.copy(this.pL, pL);
+        this.pL = pL.stream().collect(Collectors.toList());
     }
     public Booking(int flightID, String dest, LocalDate date, List<Passenger> pL) {
         this.flightID = flightID;
         this.dest = dest;
         this.date = date;
         this.pL = pL.stream().collect(Collectors.toList());
-//        this.pL = new ArrayList<>(pL);
+        this.pL = pL;
         this.seats = pL.size();
-        this.bookingID = bookingIDCounter++;
     }
 
     @Override
     public String toString(){
         return  "\nBooked for flight: "+ this.flightID +
-                "\n-> Booking number " + bookingID + "\n" +
-                "\t destination:\t" + this.dest +
-                "\t date:\t" + date.format(DateTimeFormatter.ofPattern("dd:MM:yyyy")) +
-                "\t booked " + seats + " seats in this booking.\n" +
+                "\n-> Booking ID: " + bookingID + "\n" +
+//                "\t destination:\t" + this.dest +
+//                "\t date:\t" + date.format(DateTimeFormatter.ofPattern("dd:MM:yyyy")) +
+//                "\t booked " + seats + " seats in this booking.\n" +
                 "-> Passengers:\n" + pL + "\n";
     }
 
@@ -98,7 +97,7 @@ public class Booking implements Serializable, Cloneable {
         this.seats = seats;
     }
 
-    public int getBookingID(){return this.bookingID;}
+    public String getBookingID(){return this.bookingID;}
 
 
 

@@ -38,15 +38,7 @@ public class BookingController {
         System.out.println("В файл записано: " + updatedBookings.size() + " bookings.");
     }
 
-    /**
-     * Тут запускаются все демонстрационные методы (после финального мерджа проекта, этот метод удалим)
-     */
-    public void bookingMethodsDemo(){
-        printBookingOfPineloppa("Pineloppa", "Zdurovskaya");
-        deleteBookingById(0);
-//        printBookingOfPineloppa("Pineloppa", "Zdurovskaya");
-//        printAllBookings();
-    }
+
 
     /**
      * Только для демонстрации работы метода getAllBookingsByPassangerName
@@ -64,7 +56,8 @@ public class BookingController {
     /**
      * Для использования в проекте
      */
-    public void deleteBookingById(int bookingId){
+    public void deleteBookingById(String bookingId){
+        System.out.println("we are deleting now boooking with ID: " + bookingId);
         bs.cancelBookingById(bookingId);
     }
 

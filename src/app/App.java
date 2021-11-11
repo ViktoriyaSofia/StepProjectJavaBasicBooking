@@ -8,6 +8,7 @@ import app.services.BookingService;
 
 import java.io.IOException;
 
+
 public class App {
     public static void main(String[] args) throws IOException, WrongInputDataException, ClassNotFoundException {
         System.out.println("Welcome to the best flight booking app!");
@@ -27,6 +28,17 @@ public class App {
         bc.bookingInit();
         //выводим на экран резервирование для пассажира:
         // и удаляем резервирование заданного ID- номера:
-        bc.bookingMethodsDemo();
+
+        /**
+         * Тут запускаются все демонстрационные методы (после финального мерджа проекта, этот метод удалим)
+         */
+//        bc.printBookingOfPineloppa("Pineloppa", "Zdurovskaya");
+        String IDofBookingToBeDeleted = bs.dao.getAll().get(0).bookingID;
+        bc.deleteBookingById(IDofBookingToBeDeleted);
+//        bc.printBookingOfPineloppa("Pineloppa", "Zdurovskaya");
+//        bc.printAllBookings();
+
+
     }
+
 }
