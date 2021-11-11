@@ -3,6 +3,7 @@ package com.booking.app.controllers;
 import com.booking.app.domain.flight.Flight;
 import com.booking.app.services.FlightService;
 
+import java.io.IOException;
 import java.util.List;
 
 public class FlightController {
