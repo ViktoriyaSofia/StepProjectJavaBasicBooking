@@ -1,6 +1,6 @@
 package app.domain.console.consoleController;
 
-import app.exceptions.wrongInputDataException.WrongInputDataException;
+import app.exceptions.WrongInputDataException;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
