@@ -11,20 +11,17 @@ public class FlightDaoFile extends AbstractDao<Flight> {
     }
 
     @Override
-    public List<Flight> retrieveAll() {
-        return col;
-    }
-
-    @Override
     public Flight retrieveByIndex(int index) {
-        if (index >= 0 && index < col.size()) {
-            return this.col.get(index);
+        List<Flight> flights = retrieve();
+
+        if (index >= 0 && index < flights.size()) {
+            return flights.get(index);
         } else return null;
     }
 
     @Override
     public Flight retrieveById(int id) {
-        for (Flight flight : retrieveAll()){
+        for (Flight flight : retrieve()){
             if (flight.getFlightID() == id){
                 return flight;
             }

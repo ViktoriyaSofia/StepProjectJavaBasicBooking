@@ -34,31 +34,37 @@ public abstract class AbstractDao<T> implements Dao<T> {
     }
 
     /**
-     * @param collectionObject и  - объект типа Flight или Booking
-     * @return возвращает T - Flight или Booking
+     * @param itemsList  - List типа Flight или Booking
+     * @return boolean (true/false)
      **/
 
-    public T store(T collectionObject) {
-        int collectionIndex = this.col.indexOf(collectionObject);
-
-        if (this.col.contains(collectionObject)){
-            this.col.set(collectionIndex, collectionObject);
-        }else {
-            this.col.add(collectionObject);
+    public boolean store(List<T> itemsList) {
+        col.clear();
+        col.addAll(itemsList);
+        boolean success = writeToFile();
+        col.clear();
+        if (success) {
+            return true;
+        } else {
+            System.out.println("Ошибка в сохранении");
+            return false;
         }
-
-        try(FileOutputStream fos = new FileOutputStream(fileName);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);)
-        {
-            oos.writeObject(this.col);
-        }catch (IOException error){
-            error.printStackTrace(System.out);
-        }
-
-        return collectionObject;
     }
 
-    public abstract List<T> retrieveAll();
+    public boolean writeToFile() {
+        try (FileOutputStream fos = new FileOutputStream(fileName);
+             ObjectOutputStream oos = new ObjectOutputStream(fos);
+        ) {
+            oos.writeObject(col);
+        } catch (IOException e) {
+            System.out.println("Error writing to files: booking.bin or flight.bin. Please, contacting your software developer to fix the problem");
+            System.out.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
+//    public abstract List<T> retrieveAll();
     public abstract T retrieveByIndex(int index);
     public abstract T retrieveById(int id);
 }

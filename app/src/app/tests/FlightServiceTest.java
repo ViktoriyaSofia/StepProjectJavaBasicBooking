@@ -17,18 +17,18 @@ public class FlightServiceTest {
     List<Flight> flights = new ArrayList<>();
 
     @Test
-    public void getAllFlightsTest () {
+    public void getFlightsFromDBTest () {
         Flight f1 = flightService.createNewFlight(1000, "Ankara", 1636754187, 40, 30);
         Flight f2 = flightService.createNewFlight(1000, "Munich", 1636754187, 40, 30);
         flights.add(f1);
         flights.add(f2);
-        assertEquals(flightService.getAllFlights(), flights);
+        assertEquals(flightService.getFlightsFromDB(), flights);
     }
 
     @Test
     public void createNewFlightTest () {
         Flight f = flightService.createNewFlight(1111, "Barcelona", 1636754187, 40, 30);
-        assertEquals(f, flightService.getAllFlights().get(0));
+        assertEquals(f, flightService.getFlightsFromDB().get(0));
     }
 
     @Test
