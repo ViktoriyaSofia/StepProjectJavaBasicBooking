@@ -10,7 +10,7 @@ import java.util.UUID;
 public class Booking implements Serializable, Cloneable {
 
     private int flightID;
-    public final String bookingID;
+    public String bookingID;
     private List<Passenger> pL = new ArrayList<>();
     private String dest;
     private LocalDate date;
@@ -89,6 +89,8 @@ public class Booking implements Serializable, Cloneable {
     }
 
     public String getBookingID(){return this.bookingID;}
+
+    public void setBookingTestID(String testID){this.bookingID = testID;}
 
 
 
