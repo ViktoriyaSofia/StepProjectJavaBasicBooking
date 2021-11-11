@@ -6,14 +6,14 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class a_Dao<T> implements Dao<T> {
+public abstract class AbstractDao<T> implements Dao<T> {
     List<T> col = new ArrayList<T>();
     String fileName;
 
-    public a_Dao() {
+    public AbstractDao() {
     }
 
-    public a_Dao(String fileName) {
+    public AbstractDao(String fileName) {
         this.fileName = fileName;
     }
 
