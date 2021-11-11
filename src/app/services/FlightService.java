@@ -7,6 +7,7 @@ import app.domain.flight.Flight;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -130,6 +131,13 @@ public class FlightService {
                                 flight.getDate().equals(date) &&
                                 flight.getAvailablePlaces() >= passengers)
                 ).collect(Collectors.toList());
+    }
+
+    public List<Flight> sortFlightsByDestination(List<Flight> flights){
+
+        return flights.stream()
+                .sorted(Comparator.comparing(Flight::getDestination))
+                .collect(Collectors.toList());
     }
 
     //  Выводит в консоль коллекцию рейсов (всю или отфильтрованную часть)
