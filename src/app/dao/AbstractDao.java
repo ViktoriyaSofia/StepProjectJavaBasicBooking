@@ -7,7 +7,6 @@ import java.util.List;
 public abstract class AbstractDao<T> implements Dao<T> {
 
     List<T> col = new ArrayList<>();
-
     String fileName;
     public AbstractDao() {}
 
@@ -17,14 +16,16 @@ public abstract class AbstractDao<T> implements Dao<T> {
 
 
     /** получение коллекций (booking | flight) в зависимости от типа - T и fileName - название файла где лежат эти коллекции **/
-    public List<T> retrieve(){
-        try (
-                FileInputStream fis = new FileInputStream(fileName);
-                ObjectInputStream ois = new ObjectInputStream(fis)
-        ){
+    public List<T> retrieve() throws IOException {
+        try (   FileInputStream fis = new FileInputStream(fileName);
+                ObjectInputStream ois = new ObjectInputStream(fis)  )
+        {
+            col.clear();
             col = (List<T>) ois.readObject();
         }catch (FileNotFoundException | ClassNotFoundException error){
-            error.printStackTrace(System.out);
+//            error.printStackTrace(System.out);
+            System.out.println("Error reading from files: booking.bin or flight.bin. Check and make sure the files exist in the root directory");
+            System.out.println(error.getMessage());
         }
 
         return col;
