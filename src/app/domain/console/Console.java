@@ -1,6 +1,7 @@
 package app.domain.console;
 
 import app.dao.FlightDaoFile;
+import app.domain.flight.Flight;
 import app.services.FlightService;
 import app.controllers.FlightController;
 
@@ -22,7 +23,7 @@ public class Console {
 //        bookingController = new BookingController(new BookingService(new BookingDaoFile()));
 
         int sizeFlightCollection = flightController.getFlightsFromDB().size();
-        System.out.println("Flight Collection contains " + sizeFlightCollection + " flights");
+        System.out.println("\nFlight Collection contains " + sizeFlightCollection + " flights");
 
         if(sizeFlightCollection == 0){
             System.out.println(">>> Generating Flight Collection!");
@@ -106,102 +107,160 @@ public class Console {
 
     //  Метод showOnlineFlightScoreboard() показывает информацию про все рейсы из Киева в ближайшие 24 часа (filtered DB FlightCollection)
     private void showOnlineFlightsScoreboard(){
-        System.out.println("\nThe Online Scoreboard Flight from Kiev in the next 24 hours >>> ");
-        System.out.println("Filtered DB FlightCollection!");
+        System.out.println("\n>>> View the flights from Kiev in the next 24 hours");
+        System.out.println("\nThe Online Scoreboard Flight:");
+        flightController.showFlightsCollection(flightController.getFlightsInOneDayPeriod());
     }
 
 
-    //  Метод showFlightInfoById() показывает информацию по выбранному по ID из DB FlightCollection рейсу
+    //  Метод showFlightInfoById() - показывает информацию по выбранному по ID(flightID) из DB FlightCollection рейсу
     private void showFlightInfoById(){
-        System.out.println("\nShows selected by ID Flight from DB FlightCollection!");
+        System.out.println("\n>>> View flight information by flight ID");
+        int flightID = -1;
+
+        while (flightID == -1){
+            System.out.print("Enter flight ID of Flight you'd like to get information about, required: [integer only [1000:9999]] >>> ");
+            flightID = consoleController.checkInputDataInteger(scanner.nextLine().toLowerCase().trim(), 1000, 9999);
+        }
+
+        Flight flight = flightController.getFlightById(flightID);
+        if(flight != null){
+            System.out.println("\nFound Flight with flight ID='" + flightID + "'. Information about:");
+            flight.prettyFormatFlightFullInfo();
+        } else {
+            System.out.println("\nThere is No Flight Found with flight ID='" + flightID + "'");
+        }
     }
 
 
-    //  Метод searchFlightAndBook() предоставляет возможность выбрать определенные рейсы и забронтровать на определенный рейс билеты
+    //  Метод searchFlightAndBook() - предоставляет возможность выбрать определенные рейсы и забронтровать на определенный рейс билеты
+    //  если добро на бронь - добавляет booking(бронь) в BookingCollection, - апдейтит FlightCollection по рейсу (SoldPlaces, AvailablePlaces)
     private void searchFlightAndBook(){
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("\n>>> Search and Book the flights! ");
+        System.out.println("\n>>> Search and Book the flights");
         String destinationStr = "", dateStr = "";
         int ticketsNumber = -1;
 
-        System.out.println("To search for flights, please enter some data: ");
+        System.out.println("To search for flights, please enter some data:");
         while (destinationStr.equals("")){
-            System.out.print("Enter flight destination [characters only] >>> ");
+            System.out.print("Enter flight arrival destination, required: [characters only] >>> ");
             destinationStr = consoleController.checkInputDataChars(scanner.nextLine().toLowerCase());
         }
         destinationStr = consoleController.toUpperCaseFirstLetterEachWorld(destinationStr);
 
         while (dateStr.equals("")){
-            System.out.print("Enter the date of flights [dd/MM/yyyy] >>> ");
+            System.out.print("Enter the departure date of flights, required: [dd/MM/yyyy] >>> ");
             dateStr = consoleController.checkInputDataDateString(scanner.nextLine().toLowerCase().trim());
         }
 
         while (ticketsNumber == -1){
-            System.out.print("Enter number of tickets you'd like to book [integer only, 1 to 5 tickets available in one booking] >>> ");
+            System.out.print("Enter number of tickets you'd like to book, required: [integer only, 1 to 5 tickets available in one booking] >>> ");
             ticketsNumber = consoleController.checkInputDataInteger(scanner.nextLine().toLowerCase().trim(), 1, 5);
         }
 
-        System.out.printf("\nFound flights to %s, on date %s, with the required number (%d) of available tickets: \n",
-                destinationStr, dateStr, ticketsNumber);
-        //  List<Flight> foundFlights = new ArrayList<>();
+        List<Flight> foundFlights = flightController.findFlights(destinationStr, dateStr, ticketsNumber);
+        if(foundFlights.size() > 0){
+            System.out.printf("\nFound Flights to %s, on date %s, with the required number (%d) of available tickets: \n",
+                    destinationStr, dateStr, ticketsNumber);
+            flightController.showFlightsCollection(foundFlights);
+            System.out.println();
 
-//  пока нет базы данных, например нашлось 4 рейса:
-        int sizeOfFoundFlights = 4;
-        int userChoice = -1;
-        while (userChoice == -1){
-            System.out.print("\nEnter 0 to go back to the main menu, or " +
-                    "\nChoose the sequence number of flight to continue booking [1:4} >>> ");
-            userChoice = consoleController.checkInputDataInteger(scanner.nextLine().toLowerCase().trim(), 0, 4);
-            if(userChoice == 0) break;
-        }
-
-        if(userChoice > 0){
-            List<HashMap> passengersList = new ArrayList<>();
-            passengersList = createPassengerList(ticketsNumber);
-
-            System.out.println("\nBooking done for passengers:");
-            passengersList.forEach(p -> {
-                //  for(Object entry  : p.entrySet()){ System.out.print(entry.toString() + ", ");}
-                for(Object key : p.keySet()){
-                    System.out.print(key + ": " + p.get(key) + ", ");
+            int listSize = foundFlights.size();
+            int userChoice = -1;
+            while (userChoice == -1){
+                System.out.print("Enter 0 to go back to the main menu, OR " +
+                        "\nEnter the number of flight from shown up list of Found Flights (NOT ID!) to continue booking, required: [1:" + listSize  + "] >>> ");
+                userChoice = consoleController.checkInputDataInteger(scanner.nextLine().toLowerCase().trim(), 0, listSize);
+                if(userChoice == 0) {
+                    System.out.println("Exit booking!");
+                    break;
                 }
-                System.out.println();
-            });
-        }
+            }
+
+            if(userChoice > 0){
+                Flight flight = foundFlights.get(userChoice-1);
+
+//                PassengerCollection passengersList = createPassengerList(ticketsNumber);
+//                Booking booking = new Booking(flight, passengersList);
+
+//                int bookingID = controllerBookingCollection.updateBookingCollection(booking);
+//                if(bookingID != -1){
+//                    controllerBookingCollection.saveBookingCollectionToDB(controllerBookingCollection.getBookingCollection());
+//
+//                    flight.setSoldPlaces(flight.getSoldPlaces() + ticketsNumber);
+//                    flight.setAvailablePlaces();
+//                    controllerFlightCollection.updateFlightCollection(flight);
+//                    controllerFlightCollection.saveFlightCollectionToDB(controllerFlightCollection.getFlightCollection());
+//
+//                    System.out.println("\nBooking Done!");
+//                    booking.prettyFormatBookingFullInfo();
+//                } else {
+//                    System.out.println("\nBooking Fail! Try again!");
+//                }
+            }
+        } else { System.out.printf("\nFlights by your request Not Found!" +
+                        "\nThere is no flights to %s, on date %s, with the required number (%d) of available tickets.%n"
+                , destinationStr, dateStr, ticketsNumber); }
+
     }
 
 
-    //  Метод createPassengerList() формирует соллекцию пассажиров для брони билетов на рейс
-    private List<HashMap> createPassengerList(int ticketsNumber){
-        Scanner scanner = new Scanner(System.in);
-        List<HashMap> passengersList = new ArrayList<>();
-        for(int i = 1; i <= ticketsNumber; i++){
-            String surName = "", name = "";
+    //  Метод createPassengerList() - формирует коллекцию пассажиров для брони билетов на рейс
+//    private PassengerCollection createPassengerList(int ticketsNumber){
+//        System.out.println("\n>>> Continue booking!");
+//        PassengerCollection passengersList = new PassengerCollection();
+//        for(int i = 1; i <= ticketsNumber; i++){
+//            System.out.println();
+//            String surName = "", name = "";
+//
+//            while (name.equals("")){
+//                System.out.printf("Enter the Name of passenger %d, required: [characters only] >>> ", i);
+//                name = consoleController.checkInputDataChars(scanner.nextLine().toLowerCase());
+//            }
+//            name = consoleController.toUpperCaseFirstLetterEachWorld(name);
+//
+//            while (surName.equals("")){
+//                System.out.printf("Enter the Last Name of passenger %d, required: [characters only] >>> ", i);
+//                surName = consoleController.checkInputDataChars(scanner.nextLine().toLowerCase());
+//            }
+//            surName = consoleController.toUpperCaseFirstLetterEachWorld(surName);
+//
+//            Passenger passenger = new Passenger(name, surName);
+//            passengersList.addPassenger(passenger);
+//        }
+//        return passengersList;
+//    }
 
-            while (surName.equals("")){
-                System.out.printf("Enter the Last name of passenger %d [characters only] >>> ", i);
-                surName = consoleController.checkInputDataChars(scanner.nextLine().toLowerCase());
-            }
-            surName = consoleController.toUpperCaseFirstLetterEachWorld(surName);
 
-            while (name.equals("")){
-                System.out.printf("Enter the Name of passenger %d [characters only] >>> ", i);
-                name = consoleController.checkInputDataChars(scanner.nextLine().toLowerCase());
-            }
-            name = consoleController.toUpperCaseFirstLetterEachWorld(name);
-
-            HashMap<String, String> passenger = new HashMap<>();
-            passenger.put("surname", surName);
-            passenger.put("name", name);
-            passengersList.add(passenger);
-        }
-        return passengersList;
-    }
-
-
-    //  Метод cancelBookingById() отменяет (удаляет) бронь из DB BookingCollection по ID брони
+    //  Метод cancelBookingById() - отменяет (удаляет) бронь из DB BookingCollection по ID брони
+    //  - апдейтит FlightCollection по рейсу (SoldPlaces, AvailablePlaces)
     private void cancelBookingById(){
-        System.out.println("\nCancel flight booking by it's ID!");
+        System.out.println("\n>>> Cancel flight booking by it's ID!");
+        int bookingID = -1;
+
+        while (bookingID == -1){
+            System.out.print("Enter booking ID of Booking you'd like to cancel, required: [integer only [1000:9999]] >>> ");
+            bookingID = consoleController.checkInputDataInteger(scanner.nextLine().toLowerCase().trim(), 1000, 9999);
+        }
+
+//        Booking booking = controllerBookingCollection.getBookingByBookingID(bookingID);
+//        if(booking != null){
+//            int seatsInBooking = booking.getNumberOfSeats();
+//            Flight flight = booking.getFlight();
+//
+//            if(controllerBookingCollection.deleteBookingByID(bookingID)){
+//                flight.setSoldPlaces(flight.getSoldPlaces() - seatsInBooking);
+//                flight.setAvailablePlaces();
+//
+//                controllerFlightCollection.updateFlightCollection(flight);
+//                controllerFlightCollection.saveFlightCollectionToDB(controllerFlightCollection.getFlightCollection());
+//
+//                controllerBookingCollection.saveBookingCollectionToDB(controllerBookingCollection.getBookingCollection());
+//                System.out.println("\nThe Booking with booking ID='" + bookingID + "' was canceled!");
+//            }
+//
+//        } else {
+//            System.out.println("\nThere is No Booking Found with booking ID='" + bookingID + "'");
+//        }
     }
 
 

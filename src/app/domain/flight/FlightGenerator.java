@@ -1,7 +1,7 @@
 package app.domain.flight;
 
 import java.util.*;
-import app.domain.dateMethods.DateMethods;
+import app.domain.dateMethodsw.DateMethods;
 
 
 public class FlightGenerator {
