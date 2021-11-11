@@ -53,6 +53,10 @@ public class FlightController {
         return flightService.sortFlightsByDate(flights);
     }
 
+    public List<Flight> sortFlightsByDestination(List<Flight> flights){
+        return flightService.sortFlightsByDestination(flights);
+    }
+
     public List<Flight> getFlightsInOneDayPeriod () {
         return flightService.getFlightsInOneDayPeriod();
     }
