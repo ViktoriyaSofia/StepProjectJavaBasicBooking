@@ -56,7 +56,6 @@ public class FlightService {
 
             this.createNewFlight(flightId, destination, date, totalPlaces, soldPlaces);
         }
-
         return this.getAllFlights();
     }
 
@@ -130,5 +129,15 @@ public class FlightService {
                                 flight.getDate().equals(date) &&
                                 flight.getAvailablePlaces() >= passengers)
                 ).collect(Collectors.toList());
+    }
+
+    //  Выводит в консоль коллекцию рейсов (всю или отфильтрованную часть)
+    public void showFlightsCollection(List<Flight> collection) {
+        int index = 1;
+        for(Flight flight : collection){
+            System.out.printf("#%-3d", index);
+            flight.prettyFormatFlight();
+            index++;
+        }
     }
 }

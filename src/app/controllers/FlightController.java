@@ -21,6 +21,10 @@ public class FlightController {
         return flightService.getAllFlights();
     }
 
+    public void showFlightsCollection(List<Flight> collection) {
+        flightService.showFlightsCollection(collection);
+    }
+
     public Flight saveFlightToDB (Flight flight){
         return flightService.saveFlightToDB(flight);
     }

@@ -1,33 +1,58 @@
 package app.domain.console;
 
+import app.dao.FlightDaoFile;
+import app.domain.flight.Flight;
+import app.services.FlightService;
+import app.controllers.FlightController;
+
 import app.domain.console.consoleController.ConsoleController;
 import app.exceptions.WrongInputDataException;
 
+import java.io.*;
 import java.util.*;
 
 public class Console {
-    private Map<Integer, String> mainMenuOfBookingApp;
-    private ConsoleController consoleController;
+    private final FlightController flightController;
 
-    public Console() {
-        mainMenuOfBookingApp = new HashMap<>();
+    private final List<String> mainMenuOfBookingApp;
+    private final ConsoleController consoleController;
+    Scanner scanner = new Scanner(System.in);
+
+    public Console() throws IOException {
+        flightController = new FlightController(new FlightService(new FlightDaoFile()));
+//        bookingController = new BookingController(new BookingService(new BookingDaoFile()));
+
+        int sizeFlightCollection = flightController.getFlightsFromDB().size();
+        System.out.println("Flight Collection contains " + sizeFlightCollection + " flights");
+
+        if(sizeFlightCollection == 0){
+            System.out.println(">>> Generating Flight Collection!");
+            flightController.generateFlightDB(500, 30);
+            System.out.println("New Flight Collection contains " + flightController.getAllFlights().size() + " flights");
+        }
+
+//        List<Booking> bookingCollection = bookingController.getBookingFromDB();
+//        System.out.println("Booking Collection contains " + bookingCollection.size() + " bookings");
+
+        mainMenuOfBookingApp = new ArrayList<>();
         consoleController = new ConsoleController();
         fillMainMenuOptions();
     }
 
 
-    //  Метод fillMainMenuOptions() заполняет поле экземпляра класса Console Map<Integer, String> mainMenuOfBookingApp в конструкторе
+    //  Метод fillMainMenuOptions() - заполняет поле экземпляра класса Console List<String> mainMenuOfBookingApp в конструкторе
     private void fillMainMenuOptions(){
-        mainMenuOfBookingApp.put(1, "1  .....>>  View the online board flights from Kiev in the next 24 hours");
-        mainMenuOfBookingApp.put(2, "2  .....>>  View flight information by flight ID");
-        mainMenuOfBookingApp.put(3, "3  .....>>  Search for flights and Book the flights");
-        mainMenuOfBookingApp.put(4, "4  .....>>  Cancel flight booking by it's ID");
-        mainMenuOfBookingApp.put(5, "5  .....>>  View list of all bookings of a certain passenger");
-        mainMenuOfBookingApp.put(6, "exit  ..>>  Quit the application");
+        mainMenuOfBookingApp.add("0  .....>>  View all flights from Kiev");
+        mainMenuOfBookingApp.add("1  .....>>  View the flights from Kiev in the next 24 hours");
+        mainMenuOfBookingApp.add("2  .....>>  View flight information by flight ID");
+        mainMenuOfBookingApp.add("3  .....>>  Search for flights and Book the flights");
+        mainMenuOfBookingApp.add("4  .....>>  Cancel flight booking by it's ID");
+        mainMenuOfBookingApp.add("5  .....>>  View list of all bookings of certain passenger");
+        mainMenuOfBookingApp.add("exit  ..>>  Quit the application");
     }
 
 
-    //  Метод run() запускает работу экземпляра класса Console
+    //  Метод run() - запускает работу экземпляра класса Console
     public void run(){
         while (true){
             showMainMenuOfBookingApp();
@@ -40,26 +65,24 @@ public class Console {
     }
 
 
-    //  Метод showMainMenuOfBookingApp() выводит главное меню приложения booking в консоль
+    //  Метод showMainMenuOfBookingApp() - выводит главное меню приложения booking в консоль
     private void showMainMenuOfBookingApp(){
         System.out.println("\nSelect the option of the main menu:");
-        for(Map.Entry<Integer, String> entry : mainMenuOfBookingApp.entrySet()){
-            System.out.println(entry.getValue());
-        }
+        mainMenuOfBookingApp.forEach(System.out::println);
     }
 
 
     //  implementTheSelectedActionOfMainMenu() - (реализует) вызывает методы для реализации выбранного пользователем пункта меню
     private void implementTheSelectedActionOfMainMenu() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter your choice [ 1 | 2 | 3 | 4 | 5 | exit ] >>> ");
+        System.out.print("Enter your choice, available option:[ 0 | 1 | 2 | 3 | 4 | 5 | exit ] >>> ");
         String userChoice = scanner.nextLine().toLowerCase().trim();
         switch (userChoice){
+            case "0" -> showAllFlightsCollection();
             case "1" -> showOnlineFlightsScoreboard();
             case "2" -> showFlightInfoById();
             case "3" -> searchFlightAndBook();
             case "4" -> cancelBookingById();
-            case "5" -> showAllBookingOfCertainPassenger();
+            case "5" -> showAllBookingsOfCertainPassenger();
             case "exit" -> exit();
             default -> throw new WrongInputDataException();
         }
@@ -68,7 +91,17 @@ public class Console {
 
     //  Метод exit() завершает работу экземпляра класса Console
     private void exit() {
+        scanner.close();
+        System.out.println("\nExit the application. Goodbye!");
         System.exit(1);
+    }
+
+
+    //  Метод showAllFlightsCollection() - показывает информацию про все рейсы из List<Flight> flightCollection
+    private void showAllFlightsCollection() {
+        System.out.println("\nView all flights from Kiev >>> ");
+        System.out.println("\nAll Flight from Kiev in flightCollection DB:");
+        flightController.showFlightsCollection(flightController.sortFlightsByDate(flightController.getAllFlights()));
     }
 
 
@@ -173,9 +206,36 @@ public class Console {
     }
 
 
-    //  Метод showAllBookingOfCertainPassenger()
-    private void showAllBookingOfCertainPassenger(){
-        System.out.println("\nShows list of all bookings of a certain passenger!");
+    //  Метод showAllBookingOfCertainPassenger() - находит (по имени и фамилии пассажира) его брони и выводит их в консоль
+    private void showAllBookingsOfCertainPassenger(){
+        System.out.println("\n>>> View list of all bookings of certain passenger");
+        String surName = "", name = "";
+
+        while (name.equals("")){
+            System.out.printf("Enter the Name of passenger, required: [characters only] >>> ");
+            name = consoleController.checkInputDataChars(scanner.nextLine().toLowerCase());
+        }
+        name = consoleController.toUpperCaseFirstLetterEachWorld(name);
+
+        while (surName.equals("")){
+            System.out.printf("Enter the Last Name of passenger, required: [characters only] >>> ");
+            surName = consoleController.checkInputDataChars(scanner.nextLine().toLowerCase());
+        }
+        surName = consoleController.toUpperCaseFirstLetterEachWorld(surName);
+
+//        List<Booking> bookings = controllerBookingCollection.getBookingListOfCertainPassenger(name, surName);
+//
+//        if(bookings.size() != 0){
+//            int i = 1;
+//            System.out.printf("\nBookings for passenger %s %s:%n", name, surName);
+//            for(Booking booking : bookings){
+//                System.out.println("#" + i + "  >>> ");
+//                booking.prettyFormatBookingFullInfo();
+//                i++;
+//            }
+//        } else {
+//            System.out.printf("\nThere is No Bookings for passenger %s %s!%n", name, surName);
+//        }
     }
 
 }
