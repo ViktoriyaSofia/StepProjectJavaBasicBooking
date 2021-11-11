@@ -1,6 +1,6 @@
-package com.booking.app.domain.flight;
+package app.domain.flight;
 
-import com.booking.app.domain.dateMethods.DateMethods;
+import app.domain.dateMethods.DateMethods;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

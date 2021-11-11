@@ -1,6 +1,4 @@
-package com.booking.app.dao;
-
-import com.booking.app.domain.flight.Flight;
+package app.dao;
 
 import java.io.*;
 import java.util.ArrayList;

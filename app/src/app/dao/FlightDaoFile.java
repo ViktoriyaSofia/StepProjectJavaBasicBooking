@@ -1,6 +1,6 @@
-package com.booking.app.dao;
+package app.dao;
 
-import com.booking.app.domain.flight.Flight;
+import app.domain.flight.Flight;
 
 import java.util.List;
 

@@ -1,14 +1,12 @@
-package com.booking.app.services;
+package app.services;
 
-import com.booking.app.dao.FlightDaoFile;
-import com.booking.app.domain.dateMethods.DateMethods;
-import com.booking.app.domain.flight.Flight;
+import app.dao.FlightDaoFile;
+import app.domain.dateMethods.DateMethods;
+import app.domain.flight.Flight;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;

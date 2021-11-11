@@ -1,9 +1,9 @@
-package com.booking.app;
+package app;
 
 
-import com.booking.app.controllers.FlightController;
-import com.booking.app.dao.FlightDaoFile;
-import com.booking.app.services.FlightService;
+import app.controllers.FlightController;
+import app.dao.FlightDaoFile;
+import app.services.FlightService;
 
 import java.io.IOException;
 
