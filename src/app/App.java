@@ -15,27 +15,34 @@ public class App {
         Console console = new Console();
 //        console.run();
 
+
+        /**
+         * НАЧАЛО КОДА ВЛАДА:
+         */
         //инстанциируем сервисы: dao, service, controller для booking:
         BookingDaoFile bookingDao = new BookingDaoFile();
         BookingService bs = new BookingService(bookingDao);
         BookingController bc = new BookingController(bs);
 
-        /**
-         * (после финального мерджа проекта, блок кода стр.23 - 30 удалим:
-         * (удалим запуск методов bc.bookingInit(); bc.bookingMethodsDemo();)
-         */
+
         //создаём тестовые 2шт резервирования с flightID 15 и 27, по 4 пассажира в каждом
         bc.bookingInit();
-        //выводим на экран резервирование для пассажира:
-        // и удаляем резервирование заданного ID- номера:
+
 
         /**
-         * Тут запускаются все демонстрационные методы (после финального мерджа проекта, этот метод удалим)
+         * ниже запускаются все демонстрационные методы (после финального мерджа проекта, всё это удалим:)
          */
-//        bc.printBookingOfPineloppa("Pineloppa", "Zdurovskaya");
+
+
+        // удаляем резервирование заданного ID- номера:
         String IDofBookingToBeDeleted = bs.dao.getAll().get(0).bookingID;
         bc.deleteBookingById(IDofBookingToBeDeleted);
+
+
+        //выводим на экран резервирование для пассажира:
 //        bc.printBookingOfPineloppa("Pineloppa", "Zdurovskaya");
+
+        // вывести на экран все имеющиеся в базе резервирования:
 //        bc.printAllBookings();
 
 

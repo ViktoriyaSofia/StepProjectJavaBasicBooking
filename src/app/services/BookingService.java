@@ -47,6 +47,10 @@ public class BookingService {
         return b;
     }
 
+    /**
+     * Метод для удаления резервирования по заданному String айдишнику.   Айдишники придется брать
+     * из самих резервирований по:   bs.dao.getAll().get(0).bookingID;  (см. в App:  IDofBookingToBeDeleted  )
+     */
     public void cancelBookingById(String id) {
         List<Booking> bL = Collections.unmodifiableList(dao.getAll());
         List<Booking> newBL = bL.stream().filter(el -> !el.getBookingID().equals(id)).collect(Collectors.toList());
