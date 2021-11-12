@@ -113,16 +113,18 @@ public class Flight implements Serializable {
                 '}';
     }
 
-    public void prettyFormatFlight() {
+    public String prettyFormatFlight() {
         String format = "%-22s%-30s%s%n";
         String flight = "\tFlight: " + " ID='" + (this.getFlightID() == -1 ? "no info" : this.getFlightID()) + "'";
         String destination = "destination='" + (this.getDestination().equals("") ? "no info" : this.getDestination()) + "'";
         String dateDeparture =  "dateDeparture='" + (this.getDateSeconds() == -1 ? "no info"
                 : getDateTimeStringFromEpochSecond(this.getDateSeconds())) + "'";
         System.out.printf(format, flight, destination, dateDeparture);
+
+        return String.format(format, flight, destination, dateDeparture);
     }
 
-    public void prettyFormatFlightFullInfo() {
+    public String prettyFormatFlightFullInfo() {
         String format = "%-21s%-26s%-42s%n%-21s%-26s%s%n";
         String flight = "Flight: " + "ID='" + (this.getFlightID() == -1 ? "no info" : this.getFlightID()) + "'";
         String destination = "destination='" + (this.getDestination().equals("") ? "no info" : this.getDestination()) + "'";
@@ -132,6 +134,7 @@ public class Flight implements Serializable {
         String soldPlaces = "soldPlaces='" + this.getSoldPlaces() + "'";
         String availablePlaces = "availablePlaces='" + this.getAvailablePlaces() + "'";
         System.out.printf(format, flight, destination, dateDeparture, totalPlaces, soldPlaces, availablePlaces);
+        return String.format(format, flight, destination, dateDeparture, totalPlaces, soldPlaces, availablePlaces);
     }
 
 

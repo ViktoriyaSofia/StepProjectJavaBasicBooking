@@ -52,9 +52,9 @@ public class BookingService {
      * из самих резервирований по:   bs.dao.getAll().get(0).bookingID;  (см. в App:  IDofBookingToBeDeleted  )
      */
     public void cancelBookingById(String id) {
-        List<Booking> bL = Collections.unmodifiableList(dao.getAll());
+        List<Booking> bL = Collections.unmodifiableList(dao.retrieve());
         List<Booking> newBL = bL.stream().filter(el -> !el.getBookingID().equals(id)).collect(Collectors.toList());
-        dao.saveAll(newBL);
+        dao.store(newBL);
         System.out.println("booking number " + id + " removed");
         System.out.println("number of bookings after deletion: " + newBL.size());
     }
@@ -65,7 +65,7 @@ public class BookingService {
      * getAllBookingsByPassangerName("Иван", "Петров").get(0).getFlightID
      */
     public Optional<List<Booking>> getAllBookingsByPassangerName(String name, String lastName) {
-        List<Booking> pendingBookings = Collections.unmodifiableList(dao.getAll());
+        List<Booking> pendingBookings = Collections.unmodifiableList(dao.retrieve());
         List<Booking> updatedL =  pendingBookings.stream().flatMap(el -> {
                     List<Passenger> locaPassangerlList = el.getpL();
                     if (

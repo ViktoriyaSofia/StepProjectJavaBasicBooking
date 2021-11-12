@@ -17,15 +17,11 @@ public class FlightController {
         return flightService.getFlightsFromDB();
     }
 
-    public List<Flight> getAllFlights(){
-        return flightService.getAllFlights();
-    }
-
     public void showFlightsCollection(List<Flight> collection) {
         flightService.showFlightsCollection(collection);
     }
 
-    public Flight saveFlightToDB (Flight flight){
+    public boolean saveFlightToDB (List<Flight> flight){
         return flightService.saveFlightToDB(flight);
     }
 
