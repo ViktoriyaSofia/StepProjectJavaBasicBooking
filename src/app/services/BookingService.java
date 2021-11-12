@@ -52,6 +52,7 @@ public class BookingService {
      * из самих резервирований по:   bs.dao.getAll().get(0).bookingID;  (см. в App:  IDofBookingToBeDeleted  )
      */
     public void cancelBookingById(String id) {
+        if (id == null) return;
         List<Booking> bL = Collections.unmodifiableList(dao.retrieve());
         List<Booking> newBL = bL.stream().filter(el -> !el.getBookingID().equals(id)).collect(Collectors.toList());
         dao.store(newBL);

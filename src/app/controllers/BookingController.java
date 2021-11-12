@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class BookingController {
-    private final BookingService bs;
+    public final BookingService bs;
 
     public BookingController(BookingService service){
         this.bs = service;

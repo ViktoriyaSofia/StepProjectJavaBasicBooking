@@ -34,14 +34,18 @@ public class Booking implements Serializable, Cloneable {
     public Booking(int flightID, List<Passenger> pL){
 
         this.flightID = flightID;
-        this.pL = pL.stream().collect(Collectors.toList());
+        if (pL != null) {
+            this.pL = pL.stream().collect(Collectors.toList());
+        }
     }
     public Booking(int flightID, String dest, LocalDate date, List<Passenger> pL) {
         this();
         this.flightID = flightID;
         this.dest = dest;
         this.date = date;
-        this.pL = pL.stream().collect(Collectors.toList());
+        if (pL != null) {
+            this.pL = pL.stream().collect(Collectors.toList());
+        }
         this.pL = pL;
         this.seats = pL.size();
     }
