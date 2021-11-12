@@ -1,9 +1,14 @@
 package app.domain.console;
 
 import app.dao.FlightDaoFile;
-import app.domain.flight.Flight;
 import app.services.FlightService;
 import app.controllers.FlightController;
+import app.domain.flight.Flight;
+
+import app.dao.BookingDaoFile;
+import app.services.BookingService;
+import app.controllers.BookingController;
+import app.domain.booking.Booking;
 
 import app.exceptions.WrongInputDataException;
 
@@ -12,6 +17,7 @@ import java.util.*;
 
 public class Console {
     private final FlightController flightController;
+    private final BookingController bookingController;
 
     private final List<String> mainMenuOfBookingApp;
     private final ConsoleController consoleController;
@@ -19,7 +25,7 @@ public class Console {
 
     public Console() throws IOException {
         flightController = new FlightController(new FlightService(new FlightDaoFile()));
-//        bookingController = new BookingController(new BookingService(new BookingDaoFile()));
+        bookingController = new BookingController(new BookingService(new BookingDaoFile()));
 
         int sizeFlightCollection = flightController.getFlightsFromDB().size();
         System.out.println("\nFlight Collection contains " + sizeFlightCollection + " flights");
@@ -27,11 +33,13 @@ public class Console {
         if(sizeFlightCollection == 0){
             System.out.println(">>> Generating Flight Collection!");
             flightController.generateFlightDB(1000, 30);
-            System.out.println("New Flight Collection contains " + flightController.getAllFlights().size() + " flights");
+            System.out.println("New Flight Collection contains " + flightController.getFlightsFromDB().size() + " flights");
         }
 
 //        List<Booking> bookingCollection = bookingController.getBookingFromDB();
 //        System.out.println("Booking Collection contains " + bookingCollection.size() + " bookings");
+//
+//        bookingController.bookingInit();
 
         mainMenuOfBookingApp = new ArrayList<>();
         consoleController = new ConsoleController();
@@ -57,7 +65,7 @@ public class Console {
             showMainMenuOfBookingApp();
             try {
                 implementTheSelectedActionOfMainMenu();
-            } catch (WrongInputDataException e){
+            } catch (WrongInputDataException | IOException e){
                 WrongInputDataException.throwException();
             }
         }
@@ -72,7 +80,7 @@ public class Console {
 
 
     //  implementTheSelectedActionOfMainMenu() - (реализует) вызывает методы для реализации выбранного пользователем пункта меню
-    private void implementTheSelectedActionOfMainMenu() {
+    private void implementTheSelectedActionOfMainMenu() throws IOException {
         System.out.print("Enter your choice, available option:[ 0 | 1 | 2 | 3 | 4 | 5 | exit ] >>> ");
         String userChoice = scanner.nextLine().toLowerCase().trim();
         switch (userChoice){
@@ -97,10 +105,10 @@ public class Console {
 
 
     //  Метод showAllFlightsCollection() - показывает информацию про все рейсы из List<Flight> flightCollection
-    private void showAllFlightsCollection() {
+    private void showAllFlightsCollection() throws IOException {
         System.out.println("\nView all flights from Kiev >>> ");
         System.out.println("\nAll Flight from Kiev in flightCollection DB:");
-        flightController.showFlightsCollection(flightController.sortFlightsByDate(flightController.getAllFlights()));
+        flightController.showFlightsCollection(flightController.sortFlightsByDate(flightController.getFlightsFromDB()));
     }
 
 

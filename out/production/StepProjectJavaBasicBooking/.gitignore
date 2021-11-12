@@ -1,0 +1,7 @@
+.idea/
+/mentor_instructions/
+/DB/
+*.md
+*.iml
+*.xml
+*.bin
