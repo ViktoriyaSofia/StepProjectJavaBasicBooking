@@ -26,7 +26,7 @@ public class App {
 
 
         // удаляем резервирование заданного ID- номера:
-        String IDofBookingToBeDeleted = bs.dao.getAll().get(0).bookingID;
+        String IDofBookingToBeDeleted = bs.dao.retrieve().get(0).bookingID;
         bc.deleteBookingById(IDofBookingToBeDeleted);
 
 

@@ -1,27 +1,46 @@
 package app.dao;
 
-import app.exceptions.FileNotFoundOrCorrupt;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractDao<T> implements Dao<T> {
-    List<T> col = new ArrayList<T>();
+
+    List<T> col = new ArrayList<>();
     String fileName;
 
-    public AbstractDao() {
-    }
-
+    public AbstractDao() {}
     public AbstractDao(String fileName) {
         this.fileName = fileName;
     }
 
+
+    /** получение коллекций (booking | flight) в зависимости от типа - T и fileName - название файла где лежат эти коллекции **/
+    public List<T> retrieve()  {
+        try (
+                FileInputStream fis = new FileInputStream(fileName);
+                ObjectInputStream ois = new ObjectInputStream(fis)
+        ){
+            col.clear();
+            col = (List<T>) ois.readObject();
+        }catch (ClassNotFoundException error){
+            System.out.println("Клас не найден");
+        }catch (IOException  error){
+            System.out.println("Ошибка при чтении файла booking.bin или flight.bin. Check and make sure the files exist in the root directory");
+            System.out.println(error.getMessage());
+        }
+
+        return col;
+    }
+
     /**
-     * saveAll()  получает список itemsList (это flights или bookings), копирует в col,
-     * и вызывается метод дао saveAll() сохранения col. в файл
-     */
-    public boolean saveAll(List<T> itemsList) {
+     *  Получает список itemsList (это flights или bookings), копирует в col,
+     *  и вызывается метод дао сохранения col. в файл
+     * @param itemsList  - List типа Flight или Booking
+     * @return boolean (true/false)
+     **/
+
+    public boolean store(List<T> itemsList) {
         col.clear();
         col.addAll(itemsList);
         boolean success = writeToFile();
@@ -30,11 +49,10 @@ public abstract class AbstractDao<T> implements Dao<T> {
             System.out.println("all items saved");
             return true;
         } else {
-            System.out.println("error saving all items");
+            System.out.println("Ошибка в сохранении");
             return false;
         }
     }
-
 
     public boolean writeToFile() {
         try (FileOutputStream fos = new FileOutputStream(fileName);
@@ -49,40 +67,4 @@ public abstract class AbstractDao<T> implements Dao<T> {
         return true;
     }
 
-    /**
-     * метод получения коллекций col (flights, либо bookings) из файлов.  Имена файлов задаются параметром filename:
-     */
-    public List<T> getAll() {
-        try (FileInputStream fis = new FileInputStream(fileName);
-             ObjectInputStream ois = new ObjectInputStream(fis);) {
-            col.clear();
-            col.addAll((List<T>) ois.readObject());
-        } catch (ClassNotFoundException e) {
-            System.out.println("ClassNotFoundException");
-        } catch (IOException e) {
-            System.out.println("Error reading from files: booking.bin or flight.bin. Check and make sure the files exist in the root directory");
-            System.out.println(e.getMessage());
-        }
-        return col; //вне зависимости от успешности считывания файла (есть он или нет) - коллекция col должна существовать ,хоть и пустая!
-    }
-
-    public T getByIndex(int index) {
-        T var = null;
-        return var;
-    }
-    public T delete(int index) {
-        T var = null;
-        return var;
-    }
-    public boolean delete(T obj) {
-        return false;
-    }
-    public T save(T obj) {
-        T var = null;
-        return var;
-    }
-    public List<T> getCollectionFromDB() throws IOException{
-        return new ArrayList<T>();
-    };
 }
-
