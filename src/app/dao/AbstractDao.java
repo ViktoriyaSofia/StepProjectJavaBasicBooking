@@ -46,7 +46,7 @@ public abstract class AbstractDao<T> implements Dao<T> {
         boolean success = writeToFile();
         col.clear();
         if (success) {
-            System.out.println("all items saved");
+//            System.out.println("all items saved");
             return true;
         } else {
             System.out.println("Ошибка в сохранении");

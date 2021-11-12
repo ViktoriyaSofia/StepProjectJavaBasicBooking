@@ -74,7 +74,7 @@ public class FlightService {
                 "Paris", "Marseille", "Lyon", "Toulouse", "Nice",
                 "Melbourne", "Sydney", "Brisbane", "Perth", "Adelaide",
                 "Athens", "Thessaloniki", "Piraeus", "Larissa", "Heraklion",
-                "Istanbul", "Ankara", "İzmir", "Bursa", "Antalya",
+                "Istanbul", "Ankara", "Izmir", "Bursa", "Antalya",
                 "Tokyo", "Yokohama", "Osaka", "Nagoya", "Kyoto",
                 "Hong Kong", "Macau", "Beijing", "Tianjin", "Chaohu",
                 "Kharkiv", "Odesa", "Dnipro", "Lviv", "Kherson"
