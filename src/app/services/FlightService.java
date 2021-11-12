@@ -4,7 +4,6 @@ import app.dao.FlightDaoFile;
 import app.domain.dateMethods.DateMethods;
 import app.domain.flight.Flight;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;

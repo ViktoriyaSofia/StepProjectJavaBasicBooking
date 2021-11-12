@@ -8,7 +8,6 @@ import app.domain.flight.Flight;
 import app.dao.BookingDaoFile;
 import app.services.BookingService;
 import app.controllers.BookingController;
-import app.domain.booking.Booking;
 
 import app.exceptions.WrongInputDataException;
 

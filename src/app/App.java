@@ -1,15 +1,13 @@
 package app;
 
-import app.controllers.BookingController;
-import app.dao.BookingDaoFile;
 import app.domain.booking.Booking;
 import app.domain.console.Console;
 import app.exceptions.WrongInputDataException;
-import app.services.BookingService;
+
 import java.io.IOException;
 
 public class App {
-    public static void main(String[] args) throws IOException, WrongInputDataException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException, WrongInputDataException {
         System.out.println("Welcome to the best flight booking app!");
         Console console = new Console();
         console.run();
