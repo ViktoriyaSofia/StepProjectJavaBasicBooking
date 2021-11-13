@@ -54,6 +54,14 @@ public class BookingController {
     }
 
     /**
+     *   главный Метод создания резервирований
+     */
+    public Booking createBooking(int flightID, List<Passenger> passenger){
+        return bs.createNewBooking(flightID, passenger);
+    }
+
+
+    /**
      * Для использования в проекте
      */
     public void deleteBookingById(String bookingId){
