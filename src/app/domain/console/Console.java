@@ -208,8 +208,7 @@ public class Console {
 
     }
 
-
-//      Метод createPassengerList() - формирует коллекцию пассажиров для брони билетов на рейс
+    //  Метод createPassengerList() - формирует коллекцию пассажиров для брони билетов на рейс
     private List<Passenger> createPassengerList(int ticketsNumber){
         System.out.println("\n>>> Continue booking!");
         List<Passenger> passengersList = new ArrayList<>();
