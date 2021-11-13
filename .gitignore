@@ -3,10 +3,7 @@
 *.xml
 /flights.bin
 *.md
-<<<<<<< HEAD
 /mentor_instructions/
 /lib/
 /out/
-=======
 /mentor_instructions/
->>>>>>> dev
