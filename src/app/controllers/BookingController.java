@@ -27,8 +27,8 @@ public class BookingController {
         System.out.println("из файла считано:  " + storedBookings.size() + " bookings.");
         List<Passenger> pL1 = BookingService.createPl1();
         List<Passenger> pL2 = BookingService.createPl2();
-        Booking newBooking1 = bs.createNewBooking(15, pL1);
-        Booking newBooking2 = bs.createNewBooking(27, pL2);
+        Booking newBooking1 = createBooking(15, pL1);
+        Booking newBooking2 = createBooking(27, pL2);
 
         List<Booking> updatedBookings = new ArrayList<>(storedBookings);
         updatedBookings.add(newBooking1);
