@@ -27,8 +27,8 @@ public class App {
 
         // удаляем резервирование заданного ID- номера:
         String IDofBookingToBeDeleted = bs.dao.retrieve().get(0).bookingID;
-        bc.deleteBookingById(IDofBookingToBeDeleted);
-
+        int cancelledFlightID = bc.deleteBookingById(IDofBookingToBeDeleted);
+        System.out.println("flightID of cancelled booking: " + cancelledFlightID);
 
         //выводим на экран резервирование для пассажира:
 //        bc.printBookingOfPineloppa("Pineloppa", "Zdurovskaya");

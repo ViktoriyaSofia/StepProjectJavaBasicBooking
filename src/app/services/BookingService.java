@@ -3,6 +3,7 @@ package app.services;
 import app.dao.BookingDaoFile;
 import app.domain.booking.Booking;
 import app.domain.booking.Passenger;
+import org.w3c.dom.ls.LSOutput;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -58,13 +59,18 @@ public class BookingService {
      * Метод для удаления резервирования по заданному String айдишнику.   Айдишники придется брать
      * из самих резервирований по:   bs.dao.getAll().get(0).bookingID;  (см. в App:  IDofBookingToBeDeleted  )
      */
-    public void cancelBookingById(String id) {
-        if (id == null) return;
+    public int cancelBookingById(String id) {
+        if (id == null) return -1;
         List<Booking> bL = Collections.unmodifiableList(dao.retrieve());
+
+        Optional<Integer> cancelBookingFlightID = bL.stream().filter(b -> b.bookingID.equals(id))
+                .map(Booking::getFlightID).findFirst();
+
         List<Booking> newBL = bL.stream().filter(el -> !el.getBookingID().equals(id)).collect(Collectors.toList());
         dao.store(newBL);
         System.out.println("booking number " + id + " removed");
         System.out.println("number of bookings after deletion: " + newBL.size());
+        return cancelBookingFlightID.orElse(-1);
     }
 
     /**
