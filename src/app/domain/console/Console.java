@@ -1,6 +1,8 @@
 package app.domain.console;
 
 import app.dao.FlightDaoFile;
+import app.domain.booking.Booking;
+import app.domain.booking.Passenger;
 import app.services.FlightService;
 import app.controllers.FlightController;
 import app.domain.flight.Flight;
@@ -27,18 +29,15 @@ public class Console {
         bookingController = new BookingController(new BookingService(new BookingDaoFile()));
 
         int sizeFlightCollection = flightController.getFlightsFromDB().size();
-        System.out.println("\nFlight Collection contains " + sizeFlightCollection + " flights");
+        System.out.println("Flight Collection contains " + sizeFlightCollection + " flights\n");
+
+        System.out.println("Booking Collection contains " + bookingController.retrieveAllBookings().size() + " bookings\n");
 
         if(sizeFlightCollection == 0){
             System.out.println(">>> Generating Flight Collection!");
             flightController.generateFlightDB(1000, 30);
             System.out.println("New Flight Collection contains " + flightController.getFlightsFromDB().size() + " flights");
         }
-
-//        List<Booking> bookingCollection = bookingController.getBookingFromDB();
-//        System.out.println("Booking Collection contains " + bookingCollection.size() + " bookings");
-//
-//        bookingController.bookingInit();
 
         mainMenuOfBookingApp = new ArrayList<>();
         consoleController = new ConsoleController();
@@ -54,6 +53,7 @@ public class Console {
         mainMenuOfBookingApp.add("3  .....>>  Search for flights and Book the flights");
         mainMenuOfBookingApp.add("4  .....>>  Cancel flight booking by it's ID");
         mainMenuOfBookingApp.add("5  .....>>  View list of all bookings of certain passenger");
+        mainMenuOfBookingApp.add("6  .....>>  View list of all bookings");
         mainMenuOfBookingApp.add("exit  ..>>  Quit the application");
     }
 
@@ -89,6 +89,7 @@ public class Console {
             case "3" -> searchFlightAndBook();
             case "4" -> cancelBookingById();
             case "5" -> showAllBookingsOfCertainPassenger();
+            case "6" -> showAllBookingsCollection();
             case "exit" -> exit();
             default -> throw new WrongInputDataException();
         }
@@ -185,23 +186,21 @@ public class Console {
             if(userChoice > 0){
                 Flight flight = foundFlights.get(userChoice-1);
 
-//                PassengerCollection passengersList = createPassengerList(ticketsNumber);
-//                Booking booking = new Booking(flight, passengersList);
+                List<Passenger> passengersList = createPassengerList(ticketsNumber);
 
-//                int bookingID = controllerBookingCollection.updateBookingCollection(booking);
-//                if(bookingID != -1){
-//                    controllerBookingCollection.saveBookingCollectionToDB(controllerBookingCollection.getBookingCollection());
-//
-//                    flight.setSoldPlaces(flight.getSoldPlaces() + ticketsNumber);
-//                    flight.setAvailablePlaces();
-//                    controllerFlightCollection.updateFlightCollection(flight);
-//                    controllerFlightCollection.saveFlightCollectionToDB(controllerFlightCollection.getFlightCollection());
-//
-//                    System.out.println("\nBooking Done!");
+                Booking booking = bookingController.createBooking(flight.getFlightID(),passengersList);
+
+                if(!booking.getBookingID().equals("")){
+                    flight.setSoldPlaces(flight.getSoldPlaces() + ticketsNumber);
+                    flight.setAvailablePlaces();
+                    flightController.updateFlight(flight);
+
+                    System.out.println("\nBooking Done!");
 //                    booking.prettyFormatBookingFullInfo();
-//                } else {
-//                    System.out.println("\nBooking Fail! Try again!");
-//                }
+                    System.out.println(booking);
+                } else {
+                    System.out.println("\nBooking Fail! Try again!");
+                }
             }
         } else { System.out.printf("\nFlights by your request Not Found!" +
                         "\nThere is no flights to %s, on date %s, with the required number (%d) of available tickets.%n"
@@ -210,43 +209,45 @@ public class Console {
     }
 
 
-    //  Метод createPassengerList() - формирует коллекцию пассажиров для брони билетов на рейс
-//    private PassengerCollection createPassengerList(int ticketsNumber){
-//        System.out.println("\n>>> Continue booking!");
-//        PassengerCollection passengersList = new PassengerCollection();
-//        for(int i = 1; i <= ticketsNumber; i++){
-//            System.out.println();
-//            String surName = "", name = "";
-//
-//            while (name.equals("")){
-//                System.out.printf("Enter the Name of passenger %d, required: [characters only] >>> ", i);
-//                name = consoleController.checkInputDataChars(scanner.nextLine().toLowerCase());
-//            }
-//            name = consoleController.toUpperCaseFirstLetterEachWorld(name);
-//
-//            while (surName.equals("")){
-//                System.out.printf("Enter the Last Name of passenger %d, required: [characters only] >>> ", i);
-//                surName = consoleController.checkInputDataChars(scanner.nextLine().toLowerCase());
-//            }
-//            surName = consoleController.toUpperCaseFirstLetterEachWorld(surName);
-//
-//            Passenger passenger = new Passenger(name, surName);
-//            passengersList.addPassenger(passenger);
-//        }
-//        return passengersList;
-//    }
+//      Метод createPassengerList() - формирует коллекцию пассажиров для брони билетов на рейс
+    private List<Passenger> createPassengerList(int ticketsNumber){
+        System.out.println("\n>>> Continue booking!");
+        List<Passenger> passengersList = new ArrayList<>();
+        for(int i = 1; i <= ticketsNumber; i++){
+            System.out.println();
+            String surName = "", name = "";
+
+            while (name.equals("")){
+                System.out.printf("Enter the Name of passenger %d, required: [characters only] >>> ", i);
+                name = consoleController.checkInputDataChars(scanner.nextLine().toLowerCase());
+            }
+            name = consoleController.toUpperCaseFirstLetterEachWorld(name);
+
+            while (surName.equals("")){
+                System.out.printf("Enter the Last Name of passenger %d, required: [characters only] >>> ", i);
+                surName = consoleController.checkInputDataChars(scanner.nextLine().toLowerCase());
+            }
+            surName = consoleController.toUpperCaseFirstLetterEachWorld(surName);
+
+            Passenger passenger = new Passenger(name, surName);
+            passengersList.add(passenger);
+        }
+        return passengersList;
+    }
 
 
     //  Метод cancelBookingById() - отменяет (удаляет) бронь из DB BookingCollection по ID брони
     //  - апдейтит FlightCollection по рейсу (SoldPlaces, AvailablePlaces)
     private void cancelBookingById(){
         System.out.println("\n>>> Cancel flight booking by it's ID!");
-        int bookingID = -1;
+        String bookingID = "";
 
-        while (bookingID == -1){
-            System.out.print("Enter booking ID of Booking you'd like to cancel, required: [integer only [1000:9999]] >>> ");
-            bookingID = consoleController.checkInputDataInteger(scanner.nextLine().toLowerCase().trim(), 1000, 9999);
+        while (bookingID.equals("")){
+            System.out.print("Enter booking ID of Booking you'd like to cancel, required: [characters only] >>> ");
+            bookingID = consoleController.checkInputDataChars(scanner.nextLine().toLowerCase().trim());
         }
+
+        bookingController.deleteBookingById(bookingID);
 
 //        Booking booking = controllerBookingCollection.getBookingByBookingID(bookingID);
 //        if(booking != null){
@@ -287,8 +288,8 @@ public class Console {
         }
         surName = consoleController.toUpperCaseFirstLetterEachWorld(surName);
 
-//        List<Booking> bookings = controllerBookingCollection.getBookingListOfCertainPassenger(name, surName);
-//
+        bookingController.printBookingOfGivenPassenger(name, surName);
+
 //        if(bookings.size() != 0){
 //            int i = 1;
 //            System.out.printf("\nBookings for passenger %s %s:%n", name, surName);
@@ -300,6 +301,13 @@ public class Console {
 //        } else {
 //            System.out.printf("\nThere is No Bookings for passenger %s %s!%n", name, surName);
 //        }
+    }
+
+
+    public void showAllBookingsCollection(){
+        System.out.println("\nView list of all bookings >>> ");
+        System.out.println("\nAll Bookings in bookingCollection DB:");
+        bookingController.printAllBookings();
     }
 
 }
