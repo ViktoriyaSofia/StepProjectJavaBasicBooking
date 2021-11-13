@@ -38,12 +38,18 @@ public class BookingController {
         System.out.println("В файл записано: " + updatedBookings.size() + " bookings.");
     }
 
+/**
+ * Получить резервирования из файла/DB
+ */
+    public List<Booking> retrieveAllBookings(){
+        return bs.getAllBookingsFromFile();
+    }
 
 
     /**
      * Только для демонстрации работы метода getAllBookingsByPassangerName
      */
-    public void printBookingOfPineloppa(String name, String lName){
+    public void printBookingOfGivenPassenger(String name, String lName){
         Optional<List<Booking>> bOpt= bs.getAllBookingsByPassangerName(name, lName);
         if (bOpt.isPresent() && bOpt.get().size() != 0) {
             System.out.println("This passenger has the following booking(s):");

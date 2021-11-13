@@ -48,6 +48,13 @@ public class BookingService {
     }
 
     /**
+     * Получить все резервирования из dao
+     */
+    public List<Booking> getAllBookingsFromFile(){
+        return dao.retrieve();
+    }
+
+    /**
      * Метод для удаления резервирования по заданному String айдишнику.   Айдишники придется брать
      * из самих резервирований по:   bs.dao.getAll().get(0).bookingID;  (см. в App:  IDofBookingToBeDeleted  )
      */
