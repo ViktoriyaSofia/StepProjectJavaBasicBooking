@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class BookingController {
-    private final BookingService bs;
+    public final BookingService bs;
 
     public BookingController(BookingService service){
         this.bs = service;
@@ -27,8 +27,8 @@ public class BookingController {
         System.out.println("из файла считано:  " + storedBookings.size() + " bookings.");
         List<Passenger> pL1 = BookingService.createPl1();
         List<Passenger> pL2 = BookingService.createPl2();
-        Booking newBooking1 = bs.createNewBooking(15, pL1);
-        Booking newBooking2 = bs.createNewBooking(27, pL2);
+        Booking newBooking1 = createBooking(15, pL1);
+        Booking newBooking2 = createBooking(27, pL2);
 
         List<Booking> updatedBookings = new ArrayList<>(storedBookings);
         updatedBookings.add(newBooking1);
@@ -38,12 +38,18 @@ public class BookingController {
         System.out.println("В файл записано: " + updatedBookings.size() + " bookings.");
     }
 
+    /**
+     * Получить резервирования из файла/DB
+     */
+    public List<Booking> retrieveAllBookings(){
+        return bs.getAllBookingsFromFile();
+    }
 
 
     /**
      * Только для демонстрации работы метода getAllBookingsByPassangerName
      */
-    public void printBookingOfPineloppa(String name, String lName){
+    public void printBookingOfGivenPassenger(String name, String lName){
         Optional<List<Booking>> bOpt= bs.getAllBookingsByPassangerName(name, lName);
         if (bOpt.isPresent() && bOpt.get().size() != 0) {
             System.out.println("This passenger has the following booking(s):");
@@ -52,6 +58,14 @@ public class BookingController {
             System.out.println("This person does not have any bookings yet");
         }
     }
+
+    /**
+     *   главный Метод создания резервирований
+     */
+    public Booking createBooking(int flightID, List<Passenger> passenger){
+        return bs.createNewBooking(flightID, passenger);
+    }
+
 
     /**
      * Для использования в проекте
