@@ -48,10 +48,18 @@ public class BookingService {
     }
 
     /**
+     * Получить все резервирования из dao
+     */
+    public List<Booking> getAllBookingsFromFile(){
+        return dao.retrieve();
+    }
+
+    /**
      * Метод для удаления резервирования по заданному String айдишнику.   Айдишники придется брать
      * из самих резервирований по:   bs.dao.getAll().get(0).bookingID;  (см. в App:  IDofBookingToBeDeleted  )
      */
     public void cancelBookingById(String id) {
+        if (id == null) return;
         List<Booking> bL = Collections.unmodifiableList(dao.retrieve());
         List<Booking> newBL = bL.stream().filter(el -> !el.getBookingID().equals(id)).collect(Collectors.toList());
         dao.store(newBL);
@@ -67,19 +75,19 @@ public class BookingService {
     public Optional<List<Booking>> getAllBookingsByPassangerName(String name, String lastName) {
         List<Booking> pendingBookings = Collections.unmodifiableList(dao.retrieve());
         List<Booking> updatedL =  pendingBookings.stream().flatMap(el -> {
-                    List<Passenger> locaPassangerlList = el.getpL();
-                    if (
-                            locaPassangerlList.stream().anyMatch(passanger -> {
-                                        return passanger.getName().equalsIgnoreCase(name)
-                                                && passanger.getlName().equalsIgnoreCase(lastName);
-                                    }
-                            )) {
-                        return Stream.of(el);
-                    } else {
-                        return Stream.empty();
-                    }
+            List<Passenger> locaPassangerlList = el.getpL();
+            if (
+                    locaPassangerlList.stream().anyMatch(passanger -> {
+                                return passanger.getName().equalsIgnoreCase(name)
+                                        && passanger.getlName().equalsIgnoreCase(lastName);
+                            }
+                    )) {
+                return Stream.of(el);
+            } else {
+                return Stream.empty();
+            }
 
-                }).collect(Collectors.toList());
+        }).collect(Collectors.toList());
 
         return Optional.of(updatedL);
     }
