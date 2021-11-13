@@ -184,16 +184,28 @@ public class Console {
             }
 
             if(userChoice > 0){
-                Flight flight = foundFlights.get(userChoice-1);
+                int flightID = foundFlights.get(userChoice-1).getFlightID();
 
                 List<Passenger> passengersList = createPassengerList(ticketsNumber);
 
-                Booking booking = bookingController.createBooking(flight.getFlightID(),passengersList);
+                Booking booking = bookingController.createBooking(flightID,passengersList);
 
-                if(!booking.getBookingID().equals("")){
+                if(booking != null){
+                    Flight flight = flightController.getFlightById(flightID);
+                    System.out.println("\nFlight from DB before update:");
+                    flight.prettyFormatFlightFullInfo();
+
                     flight.setSoldPlaces(flight.getSoldPlaces() + ticketsNumber);
                     flight.setAvailablePlaces();
+
+                    System.out.println("\nUpdated flight before flightController.updateFlight(flight):");
+                    flight.prettyFormatFlightFullInfo();
+
                     flightController.updateFlight(flight);
+
+                    System.out.println("\nFlight from DB after flightController.updateFlight(flight):");
+                    flightController.getFlightById(flightID).prettyFormatFlightFullInfo();
+
 
                     System.out.println("\nBooking Done!");
 //                    booking.prettyFormatBookingFullInfo();
@@ -210,7 +222,7 @@ public class Console {
 
     //  Метод createPassengerList() - формирует коллекцию пассажиров для брони билетов на рейс
     private List<Passenger> createPassengerList(int ticketsNumber){
-        System.out.println("\n>>> Continue booking!");
+        System.out.print("\n>>> Continue booking!");
         List<Passenger> passengersList = new ArrayList<>();
         for(int i = 1; i <= ticketsNumber; i++){
             System.out.println();
