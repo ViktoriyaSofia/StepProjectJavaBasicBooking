@@ -48,6 +48,7 @@ public class BookingService {
     }
 
     /**
+<<<<<<< HEAD
      * Получить все резервирования из dao
      */
     public List<Booking> getAllBookingsFromFile(){
@@ -55,11 +56,16 @@ public class BookingService {
     }
 
     /**
+=======
+>>>>>>> dev
      * Метод для удаления резервирования по заданному String айдишнику.   Айдишники придется брать
      * из самих резервирований по:   bs.dao.getAll().get(0).bookingID;  (см. в App:  IDofBookingToBeDeleted  )
      */
     public void cancelBookingById(String id) {
+<<<<<<< HEAD
         if (id == null) return;
+=======
+>>>>>>> dev
         List<Booking> bL = Collections.unmodifiableList(dao.retrieve());
         List<Booking> newBL = bL.stream().filter(el -> !el.getBookingID().equals(id)).collect(Collectors.toList());
         dao.store(newBL);
@@ -75,6 +81,7 @@ public class BookingService {
     public Optional<List<Booking>> getAllBookingsByPassangerName(String name, String lastName) {
         List<Booking> pendingBookings = Collections.unmodifiableList(dao.retrieve());
         List<Booking> updatedL =  pendingBookings.stream().flatMap(el -> {
+<<<<<<< HEAD
             List<Passenger> locaPassangerlList = el.getpL();
             if (
                     locaPassangerlList.stream().anyMatch(passanger -> {
@@ -92,3 +99,22 @@ public class BookingService {
         return Optional.of(updatedL);
     }
 }
+=======
+                    List<Passenger> locaPassangerlList = el.getpL();
+                    if (
+                            locaPassangerlList.stream().anyMatch(passanger -> {
+                                        return passanger.getName().equalsIgnoreCase(name)
+                                                && passanger.getlName().equalsIgnoreCase(lastName);
+                                    }
+                            )) {
+                        return Stream.of(el);
+                    } else {
+                        return Stream.empty();
+                    }
+
+                }).collect(Collectors.toList());
+
+        return Optional.of(updatedL);
+    }
+}
+>>>>>>> dev

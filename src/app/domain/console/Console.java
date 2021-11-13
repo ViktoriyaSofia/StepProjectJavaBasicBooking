@@ -1,8 +1,6 @@
 package app.domain.console;
 
 import app.dao.FlightDaoFile;
-import app.domain.booking.Booking;
-import app.domain.booking.Passenger;
 import app.services.FlightService;
 import app.controllers.FlightController;
 import app.domain.flight.Flight;
@@ -10,6 +8,8 @@ import app.domain.flight.Flight;
 import app.dao.BookingDaoFile;
 import app.services.BookingService;
 import app.controllers.BookingController;
+import app.domain.booking.Booking;
+import app.domain.booking.Passenger;
 
 import app.exceptions.WrongInputDataException;
 
