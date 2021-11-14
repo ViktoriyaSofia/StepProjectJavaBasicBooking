@@ -39,6 +39,10 @@ public class BookingService {
      * Это основной метод создания резервирований (booking):
      */
     public Booking createNewBooking(int flightID, List<Passenger> passenger) {
+        if (passenger == null) {
+            System.out.println("passenger list is empty!");
+            return null;
+        };
         Booking b = new Booking(flightID, passenger);
         b.setpL(passenger);
         List<Booking> storedBookings = Collections.unmodifiableList(dao.retrieve());
