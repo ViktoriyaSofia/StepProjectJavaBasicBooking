@@ -44,13 +44,12 @@ public class Console {
         fillMainMenuOptions();
     }
 
-
     //  Метод fillMainMenuOptions() - заполняет поле экземпляра класса Console List<String> mainMenuOfBookingApp в конструкторе
     private void fillMainMenuOptions(){
         mainMenuOfBookingApp.add("0  .....>>  View all flights from Kiev");
         mainMenuOfBookingApp.add("1  .....>>  View the flights from Kiev in the next 24 hours");
         mainMenuOfBookingApp.add("2  .....>>  View flight information by flight ID");
-        mainMenuOfBookingApp.add("3  .....>>  Search for flights and Book the flights");
+        mainMenuOfBookingApp.add("3  .....>>  Search for flights and Book the flight");
         mainMenuOfBookingApp.add("4  .....>>  Cancel booking by it's ID");
         mainMenuOfBookingApp.add("5  .....>>  View list of all bookings of certain passenger");
         mainMenuOfBookingApp.add("6  .....>>  View list of all bookings");
@@ -80,7 +79,7 @@ public class Console {
 
     //  implementTheSelectedActionOfMainMenu() - (реализует) вызывает методы для реализации выбранного пользователем пункта меню
     private void implementTheSelectedActionOfMainMenu() throws IOException {
-        System.out.print("Enter your choice, available option:[ 0 | 1 | 2 | 3 | 4 | 5 | exit ] >>> ");
+        System.out.print("Enter your choice, available option:[ 0 | 1 | 2 | 3 | 4 | 5 | 6 | exit ] >>> ");
         String userChoice = scanner.nextLine().toLowerCase().trim();
         switch (userChoice){
             case "0" -> showAllFlightsCollection();
@@ -188,7 +187,7 @@ public class Console {
 
                 List<Passenger> passengersList = createPassengerList(ticketsNumber);
 
-                Booking booking = bookingController.createBooking(flightID,passengersList);
+                Booking booking = bookingController.createBooking(flightID, passengersList);
 
                 if(booking != null){
                     Flight flight = flightController.getFlightById(flightID);
@@ -214,8 +213,8 @@ public class Console {
                     System.out.println("\nBooking Fail! Try again!");
                 }
             }
-        } else { System.out.printf("\nFlights by your request Not Found!" +
-                        "\nThere is no flights to %s, on date %s, with the required number (%d) of available tickets.%n"
+        } else { System.out.printf("%nFlights by your request Not Found!" +
+                        "%nThere is no flights to %s, on date %s, with the required number (%d) of available tickets.%n"
                 , destinationStr, dateStr, ticketsNumber); }
 
     }
@@ -254,8 +253,8 @@ public class Console {
         String bookingID = "";
 
         while (bookingID.equals("")){
-            System.out.print("Enter booking ID of Booking you'd like to cancel, required: [characters only] >>> ");
-            bookingID = consoleController.checkInputDataChars(scanner.nextLine().toLowerCase().trim());
+            System.out.print("Enter booking ID of Booking you'd like to cancel, required: [special bookingID format] >>> ");
+            bookingID = scanner.nextLine().toLowerCase().trim();
         }
 
         bookingController.deleteBookingById(bookingID);
@@ -317,7 +316,7 @@ public class Console {
 //  Метод showAllBookingsCollection() - показывает информацию про все брони
     public void showAllBookingsCollection(){
         System.out.println("\nView list of all bookings >>> ");
-        System.out.println("\nAll Bookings in bookingCollection DB:");
+//        System.out.println("\nAll Bookings in bookingCollection DB:");
         bookingController.printAllBookings();
     }
 
