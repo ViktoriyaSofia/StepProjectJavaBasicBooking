@@ -47,7 +47,7 @@ public class FlightServiceTest {
     }
 
     @Test
-    public void generateFlightDBTest () throws IOException {
+    public void generateFlightDBTest () {
         List<Flight> f = flightService.generateFlightDB(3, 1);
         List<Flight> fCol = flightService.getFlightsFromDB();
         assertEquals(fCol, f);
