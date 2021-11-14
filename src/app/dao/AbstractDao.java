@@ -7,10 +7,9 @@ import java.util.List;
 public abstract class AbstractDao<T> implements Dao<T> {
 
     List<T> col = new ArrayList<>();
-
     String fileName;
-    public AbstractDao() {}
 
+    public AbstractDao() {}
     public AbstractDao(String fileName) {
         this.fileName = fileName;
     }
@@ -22,11 +21,12 @@ public abstract class AbstractDao<T> implements Dao<T> {
                 FileInputStream fis = new FileInputStream(fileName);
                 ObjectInputStream ois = new ObjectInputStream(fis)
         ){
+            col.clear();
             col = (List<T>) ois.readObject();
         }catch (ClassNotFoundException error){
             System.out.println("Клас не найден");
         }catch (IOException  error){
-            System.out.println("Ошибка при чтении файла booking.bin или flight.bin");
+            System.out.println("Ошибка при чтении файла booking.bin или flight.bin. Check and make sure the files exist in the root directory");
             System.out.println(error.getMessage());
         }
 
@@ -34,6 +34,8 @@ public abstract class AbstractDao<T> implements Dao<T> {
     }
 
     /**
+     *  Получает список itemsList (это flights или bookings), копирует в col,
+     *  и вызывается метод дао сохранения col. в файл
      * @param itemsList  - List типа Flight или Booking
      * @return boolean (true/false)
      **/
@@ -44,6 +46,7 @@ public abstract class AbstractDao<T> implements Dao<T> {
         boolean success = writeToFile();
         col.clear();
         if (success) {
+//            System.out.println("all items saved");
             return true;
         } else {
             System.out.println("Ошибка в сохранении");
@@ -64,7 +67,4 @@ public abstract class AbstractDao<T> implements Dao<T> {
         return true;
     }
 
-//    public abstract List<T> retrieveAll();
-    public abstract T retrieveByIndex(int index);
-    public abstract T retrieveById(int id);
 }

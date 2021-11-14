@@ -10,7 +10,7 @@ public class FlightDaoFile extends AbstractDao<Flight> {
         super(fileName);
     }
 
-    @Override
+//    @Override
     public Flight retrieveByIndex(int index) {
         List<Flight> flights = retrieve();
 
@@ -19,7 +19,7 @@ public class FlightDaoFile extends AbstractDao<Flight> {
         } else return null;
     }
 
-    @Override
+//    @Override
     public Flight retrieveById(int id) {
         for (Flight flight : retrieve()){
             if (flight.getFlightID() == id){

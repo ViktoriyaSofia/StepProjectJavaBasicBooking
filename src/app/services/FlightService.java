@@ -4,7 +4,6 @@ import app.dao.FlightDaoFile;
 import app.domain.dateMethods.DateMethods;
 import app.domain.flight.Flight;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -49,6 +48,7 @@ public class FlightService {
 
     /** Генерация список Flight - ов, запись в базу данных (файл) + доп. методы**/
     public List<Flight> generateFlightDB (int flightsNumber, int nextDaysNumber) {
+
         for (int i = 0; i < flightsNumber; i++) {
             int flightId = generateRandomNumber(1000, 9999);
             String destination = generateDestination();
@@ -57,9 +57,10 @@ public class FlightService {
             int soldPlaces = generateRandomNumber(0, totalPlaces + 1);
 
             this.createNewFlight(flightId, destination, date, totalPlaces, soldPlaces);
+
         }
 
-        return this.getFlightsFromDB();
+        return flights;
     }
 
     private int generateRandomNumber(int min, int max){
@@ -74,7 +75,7 @@ public class FlightService {
                 "Paris", "Marseille", "Lyon", "Toulouse", "Nice",
                 "Melbourne", "Sydney", "Brisbane", "Perth", "Adelaide",
                 "Athens", "Thessaloniki", "Piraeus", "Larissa", "Heraklion",
-                "Istanbul", "Ankara", "İzmir", "Bursa", "Antalya",
+                "Istanbul", "Ankara", "Izmir", "Bursa", "Antalya",
                 "Tokyo", "Yokohama", "Osaka", "Nagoya", "Kyoto",
                 "Hong Kong", "Macau", "Beijing", "Tianjin", "Chaohu",
                 "Kharkiv", "Odesa", "Dnipro", "Lviv", "Kherson"
@@ -125,8 +126,8 @@ public class FlightService {
                 .filter(flight ->
                         LocalDateTime.ofEpochSecond(flight.getDateSeconds(), 0, ZoneOffset.UTC)
                                 .isAfter(LocalDateTime.now()) &&
-                        LocalDateTime.ofEpochSecond(flight.getDateSeconds(), 0, ZoneOffset.UTC)
-                                .isBefore(LocalDateTime.now().plusDays(1))
+                                LocalDateTime.ofEpochSecond(flight.getDateSeconds(), 0, ZoneOffset.UTC)
+                                        .isBefore(LocalDateTime.now().plusDays(1))
                 ).collect(Collectors.toList());
 
         return this.sortFlightsByDate(flightsInOneDayPeriod);
@@ -135,9 +136,9 @@ public class FlightService {
     public List<Flight> findFlights(String destination, String date, int passengers){
         return this.getFlightsFromDB().stream()
                 .filter(flight -> (
-                    flight.getDestination().equals(destination) &&
-                    flight.getDate().equals(date) &&
-                    flight.getAvailablePlaces() >= passengers)
+                        flight.getDestination().equals(destination) &&
+                                flight.getDate().equals(date) &&
+                                flight.getAvailablePlaces() >= passengers)
                 ).collect(Collectors.toList());
     }
 
