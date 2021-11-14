@@ -90,19 +90,18 @@ public class FlightService {
     }
 
     /** Обновление или перезапись Flight **/
-    public Flight updateFlight(Flight flight){
+    public Flight updateFlight(Flight f){
 
-        List<Flight> flights = this.getFlightsFromDB();
-        int flightIndex = flights.indexOf(flight);
+        int flightIndex = flights.indexOf(f);
 
-        if (flights.contains(flight)){
-            flights.set(flightIndex, flight);
+        if (flights.contains(f)){
+            flights.set(flightIndex, f);
         }else {
-            flights.add(flight);
+            flights.add(f);
             saveFlightToDB(flights);
         }
 
-        return flights.get(flightIndex);
+        return f;
     }
 
     /** Сортировка полёта по дате **/

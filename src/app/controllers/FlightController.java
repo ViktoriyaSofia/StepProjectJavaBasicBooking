@@ -41,8 +41,8 @@ public class FlightController {
         return flightService.generateFlightDB(flightsNumber, nextDaysNumber);
     }
 
-    public Flight updateFlight(Flight flight) {
-        return flightService.updateFlight(flight);
+    public Flight updateFlight(Flight f) {
+        return flightService.updateFlight(f);
     }
 
     public List<Flight> sortFlightsByDate(List<Flight> flights) {
