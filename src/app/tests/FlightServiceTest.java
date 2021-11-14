@@ -53,4 +53,16 @@ public class FlightServiceTest {
 
         assertEquals(fGen, fCol);
     }
+
+    @Test
+    public void updateFlightTest () {
+        Flight f = fs.createNewFlight(2094, "Barcelona", 1636754187, 50, 9);
+        f.setSoldPlaces(20);
+        f.setAvailablePlaces();
+
+        Flight updatedF = fs.updateFlight(f);
+        assertEquals(updatedF, f);
+    }
+
+
 }

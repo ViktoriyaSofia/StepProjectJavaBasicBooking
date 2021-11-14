@@ -90,7 +90,7 @@ public class FlightService {
     }
 
     /** Обновление или перезапись Flight **/
-    public int updateFlight(Flight flight){
+    public Flight updateFlight(Flight flight){
 
         List<Flight> flights = this.getFlightsFromDB();
         int flightIndex = flights.indexOf(flight);
@@ -102,7 +102,7 @@ public class FlightService {
             saveFlightToDB(flights);
         }
 
-        return flights.indexOf(flight);
+        return flights.get(flightIndex);
     }
 
     /** Сортировка полёта по дате **/
