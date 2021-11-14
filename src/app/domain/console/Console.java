@@ -51,7 +51,7 @@ public class Console {
         mainMenuOfBookingApp.add("1  .....>>  View the flights from Kiev in the next 24 hours");
         mainMenuOfBookingApp.add("2  .....>>  View flight information by flight ID");
         mainMenuOfBookingApp.add("3  .....>>  Search for flights and Book the flights");
-        mainMenuOfBookingApp.add("4  .....>>  Cancel flight booking by it's ID");
+        mainMenuOfBookingApp.add("4  .....>>  Cancel booking by it's ID");
         mainMenuOfBookingApp.add("5  .....>>  View list of all bookings of certain passenger");
         mainMenuOfBookingApp.add("6  .....>>  View list of all bookings");
         mainMenuOfBookingApp.add("exit  ..>>  Quit the application");
@@ -314,7 +314,7 @@ public class Console {
 //        }
     }
 
-
+//  Метод showAllBookingsCollection() - показывает информацию про все брони
     public void showAllBookingsCollection(){
         System.out.println("\nView list of all bookings >>> ");
         System.out.println("\nAll Bookings in bookingCollection DB:");
