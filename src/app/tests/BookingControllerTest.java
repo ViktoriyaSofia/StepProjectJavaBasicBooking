@@ -5,7 +5,6 @@ import app.domain.booking.Booking;
 import app.domain.booking.Passenger;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
 
 import java.util.ArrayList;
 import java.util.List;

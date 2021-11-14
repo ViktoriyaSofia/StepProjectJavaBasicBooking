@@ -243,7 +243,9 @@ public class Console {
 
         while (bookingID.equals("")){
             System.out.print("Enter booking ID of Booking you'd like to cancel, required: [characters only] >>> ");
-            bookingID = consoleController.checkInputDataChars(scanner.nextLine().toLowerCase().trim());
+//            bookingID = consoleController.checkInputDataChars(scanner.nextLine().toLowerCase().trim());
+            bookingID = "ef77909a5fcd4ffab52de499d3f8b198";
+            break;
         }
 
         bookingController.deleteBookingById(bookingID);
