@@ -91,14 +91,12 @@ public class FlightService {
 
     /** Обновление или перезапись Flight **/
     public Flight updateFlight(Flight f){
+        List<Flight> flights = this.getFlightsFromDB();
 
         int flightIndex = flights.indexOf(f);
 
         if (flights.contains(f)){
             flights.set(flightIndex, f);
-        }else {
-            flights.add(f);
-            saveFlightToDB(flights);
         }
 
         return f;
