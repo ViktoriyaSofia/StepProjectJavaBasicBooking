@@ -39,11 +39,12 @@ public class BookingService {
      * Это основной метод создания резервирований (booking):
      */
     public Booking createNewBooking(int flightID, List<Passenger> passenger) {
-//        Booking b = new Booking(flightID, "LA",
-//                LocalDate.of(2021, 11, 30), 2);
-//              LocalDate.parse("20:09:2021", DateTimeFormatter.ofPattern("dd:MM:yyyy");
         Booking b = new Booking(flightID, passenger);
         b.setpL(passenger);
+        List<Booking> storedBookings = Collections.unmodifiableList(dao.retrieve());
+        List<Booking> updatedBookings = new ArrayList<>(storedBookings);
+        updatedBookings.add(b);
+        dao.store(new ArrayList<>(updatedBookings));
         return b;
     }
 
