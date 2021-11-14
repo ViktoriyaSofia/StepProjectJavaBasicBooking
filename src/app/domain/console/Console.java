@@ -25,7 +25,7 @@ public class Console {
     Scanner scanner = new Scanner(System.in);
 
     public Console() throws IOException {
-        flightController = new FlightController(new FlightService(new FlightDaoFile()));
+        flightController = new FlightController(new FlightService(new FlightDaoFile("flights.bin")));
         bookingController = new BookingController(new BookingService(new BookingDaoFile()));
 
         int sizeFlightCollection = flightController.getFlightsFromDB().size();

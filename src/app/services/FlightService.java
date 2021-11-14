@@ -48,6 +48,7 @@ public class FlightService {
 
     /** Генерация список Flight - ов, запись в базу данных (файл) + доп. методы**/
     public List<Flight> generateFlightDB (int flightsNumber, int nextDaysNumber) {
+
         for (int i = 0; i < flightsNumber; i++) {
             int flightId = generateRandomNumber(1000, 9999);
             String destination = generateDestination();
@@ -56,9 +57,10 @@ public class FlightService {
             int soldPlaces = generateRandomNumber(0, totalPlaces + 1);
 
             this.createNewFlight(flightId, destination, date, totalPlaces, soldPlaces);
+
         }
 
-        return this.getFlightsFromDB();
+        return flights;
     }
 
     private int generateRandomNumber(int min, int max){

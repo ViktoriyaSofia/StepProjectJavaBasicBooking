@@ -6,8 +6,8 @@ import java.util.List;
 
 public class FlightDaoFile extends AbstractDao<Flight> {
 
-    public FlightDaoFile() {
-        super("flights.bin");
+    public FlightDaoFile(String fileName) {
+        super(fileName);
     }
 
 //    @Override
