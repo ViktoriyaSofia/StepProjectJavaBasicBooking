@@ -241,12 +241,9 @@ public class Console {
         System.out.println("\n>>> Cancel flight booking by it's ID!");
         String bookingID = "";
 
-        while (bookingID.equals("")){
             System.out.print("Enter booking ID of Booking you'd like to cancel, example: [ef77909a5fcd4ffab52de499d3f8b198] >>> ");
             bookingID = scanner.nextLine().toLowerCase().trim();
-            break;
-        }
-        System.out.println();
+            System.out.println();
         bookingController.deleteBookingById(bookingID);
     }
 
