@@ -119,7 +119,6 @@ public class Flight implements Serializable {
         String destination = "destination='" + (this.getDestination().equals("") ? "no info" : this.getDestination()) + "'";
         String dateDeparture =  "dateDeparture='" + (this.getDateSeconds() == -1 ? "no info"
                 : getDateTimeStringFromEpochSecond(this.getDateSeconds())) + "'";
-        System.out.printf(format, flight, destination, dateDeparture);
 
         return String.format(format, flight, destination, dateDeparture);
     }
@@ -133,7 +132,7 @@ public class Flight implements Serializable {
         String totalPlaces = "totalPlaces='" + this.getTotalPlaces() + "'";
         String soldPlaces = "soldPlaces='" + this.getSoldPlaces() + "'";
         String availablePlaces = "availablePlaces='" + this.getAvailablePlaces() + "'";
-        System.out.printf(format, flight, destination, dateDeparture, totalPlaces, soldPlaces, availablePlaces);
+
         return String.format(format, flight, destination, dateDeparture, totalPlaces, soldPlaces, availablePlaces);
     }
 
