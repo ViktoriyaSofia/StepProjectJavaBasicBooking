@@ -41,7 +41,7 @@ public class FlightController {
         return flightService.generateFlightDB(flightsNumber, nextDaysNumber);
     }
 
-    public int updateFlight(Flight flight) {
+    public Flight updateFlight(Flight flight) {
         return flightService.updateFlight(flight);
     }
 
