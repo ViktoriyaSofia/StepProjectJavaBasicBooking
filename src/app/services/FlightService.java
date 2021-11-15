@@ -50,7 +50,7 @@ public class FlightService {
     public List<Flight> generateFlightDB (int flightsNumber, int nextDaysNumber) {
 
         for (int i = 0; i < flightsNumber; i++) {
-            int flightId = generateRandomNumber(1000, 9999);
+            int flightId = generateRandomNumber(100000, 999999);
             String destination = generateDestination();
             long date = generateDateTime(nextDaysNumber);
             int totalPlaces = 40;

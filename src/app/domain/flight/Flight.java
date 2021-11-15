@@ -114,7 +114,7 @@ public class Flight implements Serializable {
     }
 
     public String prettyFormatFlight() {
-        String format = "%-22s%-30s%s%n";
+        String format = "%-26s%-30s%s%n";
         String flight = "\tFlight: " + " ID='" + (this.getFlightID() == -1 ? "no info" : this.getFlightID()) + "'";
         String destination = "destination='" + (this.getDestination().equals("") ? "no info" : this.getDestination()) + "'";
         String dateDeparture =  "dateDeparture='" + (this.getDateSeconds() == -1 ? "no info"
