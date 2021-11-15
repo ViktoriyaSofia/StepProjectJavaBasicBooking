@@ -66,6 +66,12 @@ public class BookingController {
         return bs.createNewBooking(flightID, passenger);
     }
 
+    /**
+     *  получить Optional<Booking> по его строковому id:
+     */
+    public Optional<Booking> getBookingById(String id){
+        return bs.getBookingById(id);
+    }
 
     /**
      * Удаление резервирования флайта. Метод возращает flightID забронированного рейса/
