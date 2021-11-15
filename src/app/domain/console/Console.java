@@ -258,10 +258,10 @@ public class Console {
         System.out.println();
 
 
-        Optional<Booking> booking = bookingController.getBookingById(bookingID);
-        if(!booking.isEmpty()){
-            int flightIDToUpdate = booking.stream().toList().get(0).getFlightID();
-            int seatsToCancel = booking.stream().toList().get(0).getpL().size();
+        Booking booking = bookingController.getBookingById(bookingID);
+        if(booking != null){
+            int flightIDToUpdate = booking.getFlightID();
+            int seatsToCancel = booking.getpL().size();
 
             System.out.println("To update flight, flightID: " + flightIDToUpdate);
             System.out.println("Seats to cancel: " + seatsToCancel);
