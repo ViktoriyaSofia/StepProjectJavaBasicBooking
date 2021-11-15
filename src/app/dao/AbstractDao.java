@@ -33,20 +33,20 @@ public abstract class AbstractDao<T> implements Dao<T> {
         return col;
     }
 
+
+
     /**
      *  Получает список itemsList (это flights или bookings), копирует в col,
-     *  и вызывается метод дао сохранения col. в файл
-     * @param itemsList  - List типа Flight или Booking
-     * @return boolean (true/false)
-     **/
-
+     *      *  и вызывается метод дао сохранения col. в файл
+     *      * @param itemsList  - T типа Flight или Booking
+     *      * @return boolean (true/false)
+     */
     public boolean store(List<T> itemsList) {
         col.clear();
         col.addAll(itemsList);
         boolean success = writeToFile();
         col.clear();
         if (success) {
-//            System.out.println("all items saved");
             return true;
         } else {
             System.out.println("Ошибка в сохранении");
@@ -66,5 +66,4 @@ public abstract class AbstractDao<T> implements Dao<T> {
         }
         return true;
     }
-
 }

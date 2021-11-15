@@ -7,25 +7,25 @@ import app.domain.flight.Flight;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class FlightService {
     private final FlightDaoFile flightDao;
-    private final List<Flight> flights = new ArrayList<>();
+    private final List<Flight> flightsList = new ArrayList<>();
 
     public FlightService(FlightDaoFile flightDao) {
         this.flightDao = flightDao;
     }
 
-    /** Методы из FlightDao **/
 
-    public List<Flight> getFlightsFromDB () {
+    public List<Flight> getFlightsFromDB() {
         return flightDao.retrieve();
     }
 
-    public boolean saveFlightToDB (List<Flight> flights) {
+    public boolean saveFlightToDB(List<Flight> flights) {
         return flightDao.store(flights);
     }
 
@@ -37,17 +37,15 @@ public class FlightService {
         return flightDao.retrieveByIndex(index);
     }
 
-    /** - Создание полёта **/
-    public Flight createNewFlight (int id, String destination, long dateTime, int totalPlaces, int soldPlaces) {
+    public Flight createNewFlight(int id, String destination, long dateTime, int totalPlaces, int soldPlaces) {
         Flight flight = new Flight(id, destination, dateTime, totalPlaces, soldPlaces);
-        flights.add(flight);
-        this.saveFlightToDB(flights);
+        flightsList.add(flight);
+        this.saveFlightToDB(flightsList);
         return flight;
     }
 
 
-    /** Генерация список Flight - ов, запись в базу данных (файл) + доп. методы**/
-    public List<Flight> generateFlightDB (int flightsNumber, int nextDaysNumber) {
+    public List<Flight> generateFlightDB(int flightsNumber, int nextDaysNumber) {
 
         for (int i = 0; i < flightsNumber; i++) {
             int flightId = generateRandomNumber(100000, 999999);
@@ -60,10 +58,10 @@ public class FlightService {
 
         }
 
-        return flights;
+        return flightsList;
     }
 
-    private int generateRandomNumber(int min, int max){
+    private int generateRandomNumber(int min, int max) {
         return (int) (min + Math.random() * (max - min));
     }
 
@@ -84,42 +82,44 @@ public class FlightService {
         return destinationCities[randomCity];
     }
 
-    public long generateDateTime (int maxDays) {
+    public long generateDateTime(int maxDays) {
         DateMethods dm = new DateMethods();
         return dm.generateLocalDateTime(maxDays);
     }
 
-    /** Обновление или перезапись Flight **/
-    public Flight updateFlight(Flight f){
-        List<Flight> flights = this.getFlightsFromDB();
+    public Flight updateFlight(Flight f) {
+        List<Flight> flights = new ArrayList<>(Collections.unmodifiableList(flightDao.retrieve()));
 
         int flightIndex = flights.indexOf(f);
 
-        if (flights.contains(f)){
+        if (flights.contains(f)) {
             flights.set(flightIndex, f);
+        } else {
+            flights.add(f);
         }
+        flightDao.store(flights);
 
         return f;
     }
 
-    /** Сортировка полёта по дате **/
-    public List<Flight> sortFlightsByDate (List<Flight> flights) {
+
+    public List<Flight> sortFlightsByDate(List<Flight> flights) {
         return flights.stream()
                 .sorted((f1, f2) -> (int) (f1.getDateSeconds() - f2.getDateSeconds()))
                 .collect(Collectors.toList());
     }
 
-    public List<Flight> sortFlightsByDestination(List<Flight> flights){
-
+    public List<Flight> sortFlightsByDestination(List<Flight> flights) {
         return flights.stream()
                 .sorted(Comparator.comparing(Flight::getDestination))
                 .collect(Collectors.toList());
     }
 
-    /** Получение полётов в течении 24 часов и их стортировка **/
-    public List<Flight> getFlightsInOneDayPeriod () {
+    public List<Flight> getFlightsInOneDayPeriod() {
 
-        List<Flight> flightsInOneDayPeriod = this.getFlightsFromDB().stream()
+        List<Flight> flights = Collections.unmodifiableList(this.getFlightsFromDB());
+
+        List<Flight> flightsInOneDayPeriod = flights.stream()
                 .filter(flight ->
                         LocalDateTime.ofEpochSecond(flight.getDateSeconds(), 0, ZoneOffset.UTC)
                                 .isAfter(LocalDateTime.now()) &&
@@ -129,9 +129,15 @@ public class FlightService {
 
         return this.sortFlightsByDate(flightsInOneDayPeriod);
     }
-    /** Поиск полётов по месту прибытию, дате и кол-ву пассажиров **/
-    public List<Flight> findFlights(String destination, String date, int passengers){
-        return this.getFlightsFromDB().stream()
+
+    /**
+            * Поиск полётов по месту прибытию, дате и кол-ву пассажиров
+     */
+
+    public List<Flight> findFlights(String destination, String date, int passengers) {
+        List<Flight> flights = Collections.unmodifiableList(this.getFlightsFromDB());
+
+        return flights.stream()
                 .filter(flight -> (
                         flight.getDestination().equals(destination) &&
                                 flight.getDate().equals(date) &&
@@ -142,7 +148,7 @@ public class FlightService {
     //  Выводит в консоль коллекцию рейсов (всю или отфильтрованную часть)
     public void showFlightsCollection(List<Flight> collection) {
         int index = 1;
-        for(Flight flight : collection){
+        for (Flight flight : collection) {
             System.out.printf("#%-3d", index);
             flight.prettyFormatFlight();
             index++;
