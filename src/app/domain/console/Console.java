@@ -247,8 +247,10 @@ public class Console {
         System.out.println();
 
         Booking booking = bookingController.getBookingById(bookingID);
-        if(booking != null){
-            int flightIDToUpdate = booking.getFlightID();
+        int flightIDToUpdate = booking.getFlightID();
+        Flight flightToUpdate = flightController.getFlightById(flightIDToUpdate);
+
+        if(booking != null && flightToUpdate != null){
             int seatsToCancel = booking.getpL().size();
 
             int isBookingCanceled = bookingController.deleteBookingById(bookingID);
@@ -256,11 +258,10 @@ public class Console {
             if(isBookingCanceled != -1){
                 System.out.println("\nThe Booking with booking ID='" + bookingID + "' was canceled!");
 
-                Flight flight = flightController.getFlightById(flightIDToUpdate);
-                flight.setSoldPlaces(flight.getSoldPlaces() - seatsToCancel);
-                flight.setAvailablePlaces();
+                flightToUpdate.setSoldPlaces(flightToUpdate.getSoldPlaces() - seatsToCancel);
+                flightToUpdate.setAvailablePlaces();
 
-                flightController.updateFlight(flight);
+                flightController.updateFlight(flightToUpdate);
             }
 
         } else {
