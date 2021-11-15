@@ -1,6 +1,5 @@
 package app.tests;
 
-
 import app.controllers.BookingController;
 import app.dao.BookingDaoFile;
 import app.domain.booking.Booking;
@@ -11,7 +10,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.Before;
-import org.junit.FixMethodOrder;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -23,7 +21,6 @@ public class BookingControllerTest {
     BookingController bc;
     List<Booking> bL = new ArrayList<>();
 
-
     @Before
     public void setUp(){
         this.p = new ArrayList<>(List.of(new Passenger("Ivan", "Ivanov")));
@@ -31,9 +28,7 @@ public class BookingControllerTest {
         BookingDaoFile dao = new BookingDaoFile();
         BookingService bs = new BookingService(dao);
         this.bc = new BookingController(bs);
-
     }
-
 
     @Test
     public void createBookingNotNUllSuccess(){
@@ -70,21 +65,6 @@ public class BookingControllerTest {
         MatcherAssert.assertThat(result.get(0).getFlightID(), is(1));
         assertEquals(0, flightID);
     }
-    @Test
-    public void deleteBookingById_WithArgNullSuccessful(){
-        Booking b1 = new Booking(0, p);
-        b1.setBookingTestID("testID_is_2021");
-        Booking b2 = new Booking(1, p);
-        b2.setBookingTestID("testID_is_2022");
-        this.bL.addAll(List.of(b1, b2));
-        bc.bs.dao.store(bL);
-
-        bc.deleteBookingById(null);
-        List<Booking> result = bc.bs.dao.retrieve();
-        assertThat(result.size(), is(2));
-    }
-
-
 
     @Test
     public void deleteBookingById_WithArgNullSuccessful(){
@@ -98,5 +78,4 @@ public class BookingControllerTest {
         List<Booking> result = bc.bs.dao.retrieve();
         MatcherAssert.assertThat(result.size(), is(2));
     }
-
 }
