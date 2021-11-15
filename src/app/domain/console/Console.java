@@ -51,7 +51,7 @@ public class Console {
         mainMenuOfBookingApp.add("2  .....>>  View flight information by flight ID");
         mainMenuOfBookingApp.add("3  .....>>  Search for flights and Book the flights");
         mainMenuOfBookingApp.add("4  .....>>  Cancel booking by it's ID");
-        mainMenuOfBookingApp.add("5  .....>>  View list of all bookings of certain passenger");
+        mainMenuOfBookingApp.add("5  .....>>  View bookings of certain passenger");
         mainMenuOfBookingApp.add("6  .....>>  View list of all bookings");
         mainMenuOfBookingApp.add("exit  ..>>  Quit the application");
     }
@@ -258,41 +258,36 @@ public class Console {
         System.out.println();
 
 
-//        Booking booking = null;
-        int seats = 0, fID = 0;
-        for (Booking b : bookingController.retrieveAllBookings()) {
-            if(b.bookingID.equals(bookingID)) {
-//                booking = b;
-                seats = b.getpL().size();
-                fID = b.getFlightID();
-                break;
+        Optional<Booking> booking = bookingController.getBookingById(bookingID);
+        if(!booking.isEmpty()){
+            int flightIDToUpdate = booking.stream().toList().get(0).getFlightID();
+            int seatsToCancel = booking.stream().toList().get(0).getpL().size();
+
+            System.out.println("To update flight, flightID: " + flightIDToUpdate);
+            System.out.println("Seats to cancel: " + seatsToCancel);
+
+            int isBookingCanceled = bookingController.deleteBookingById(bookingID);
+
+            if(isBookingCanceled != -1){
+                System.out.println("\nThe Booking with booking ID='" + bookingID + "' was canceled!");
+
+                Flight flight = flightController.getFlightById(flightIDToUpdate);
+
+                System.out.println("\n!From Cancel Booking! >>> Flight from DB before update:");
+                flight.prettyFormatFlightFullInfo();
+
+                flight.setSoldPlaces(flight.getSoldPlaces() - seatsToCancel);
+                flight.setAvailablePlaces();
+                System.out.println("\n!From Cancel Booking! >>> Updated flight before flightController.updateFlight(flight):");
+                flight.prettyFormatFlightFullInfo();
+
+                flightController.updateFlight(flight);
+                System.out.println("\n!From Cancel Booking! >>> Flight from DB after flightController.updateFlight(flight):");
+                flightController.getFlightById(flightIDToUpdate).prettyFormatFlightFullInfo();
             }
-        }
-//        System.out.println("Booking to cancel OUT: " + booking);
-        System.out.println("Seats to cancel OUT: " + seats);
-        System.out.println("flightID to update OUT: " + fID);
 
-
-        int flightID = bookingController.deleteBookingById(bookingID);
-
-        if(fID != -1){
-            Flight flight = flightController.getFlightById(fID);
-
-            System.out.println("\n!From Cancel Booking! >>> Flight from DB before update:");
-            flight.prettyFormatFlightFullInfo();
-
-            flight.setSoldPlaces(flight.getSoldPlaces() - seats);
-            flight.setAvailablePlaces();
-            System.out.println("\n!From Cancel Booking! >>> Updated flight before flightController.updateFlight(flight):");
-            flight.prettyFormatFlightFullInfo();
-
-            flightController.updateFlight(flight);
-            System.out.println("\n!From Cancel Booking! >>> Flight from DB after flightController.updateFlight(flight):");
-            flightController.getFlightById(fID).prettyFormatFlightFullInfo();
-
-
-//            List<Flight> flCol = flightController.getFlightsFromDB();
-//            flightController.saveFlightToDB();
+        } else {
+            System.out.println("There is No Booking Found with booking ID='" + bookingID + "'");
         }
 
     }
@@ -300,7 +295,7 @@ public class Console {
 
     //  Метод showAllBookingOfCertainPassenger() - находит (по имени и фамилии пассажира) его брони и выводит их в консоль
     private void showAllBookingsOfCertainPassenger(){
-        System.out.println("\n>>> View list of all bookings of certain passenger");
+        System.out.println("\n>>> View bookings of certain passenger");
         String surName = "", name = "";
 
         while (name.equals("")){
@@ -321,7 +316,7 @@ public class Console {
 
     //  Метод showAllBookingsCollection() - показывает информацию про все брони
     public void showAllBookingsCollection(){
-        System.out.println("\nView list of all bookings >>> ");
+        System.out.println("\nView list of all bookings >>> \n");
         bookingController.printAllBookings();
     }
 
