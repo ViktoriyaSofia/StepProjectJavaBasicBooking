@@ -38,7 +38,7 @@ public class BookingService {
     /**
      * Это основной метод создания резервирований (booking):
      */
-    public Booking createNewBooking(int flightID, List<Passenger> passenger) {
+    public Booking  createNewBooking(int flightID, List<Passenger> passenger) {
         if (passenger == null) {
             System.out.println("passenger list is empty!");
             return null;
@@ -58,6 +58,14 @@ public class BookingService {
     public List<Booking> getAllBookingsFromFile(){
         return dao.retrieve();
     }
+
+    /**
+     *  получить Optional<Booking> по его строковому id:
+     */
+    public Optional<Booking> getBookingById(String id){
+        return dao.retrieve().stream().filter(b -> b.getBookingID().equals(id)).findFirst();
+    }
+
 
     /**
      * Метод для удаления резервирования по заданному String айдишнику.   Айдишники придется брать
