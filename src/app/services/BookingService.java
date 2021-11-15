@@ -4,6 +4,7 @@ import app.dao.BookingDaoFile;
 import app.domain.booking.Booking;
 import app.domain.booking.Passenger;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -37,7 +38,7 @@ public class BookingService {
     /**
      * Это основной метод создания резервирований (booking):
      */
-    public Booking createNewBooking(int flightID, List<Passenger> passenger) {
+    public Booking  createNewBooking(int flightID, List<Passenger> passenger) {
         if (passenger == null) {
             System.out.println("passenger list is empty!");
             return null;
@@ -57,7 +58,6 @@ public class BookingService {
     public List<Booking> getAllBookingsFromFile(){
         return dao.retrieve();
     }
-
 
     /**
      *  получить Optional<Booking> по его строковому id:
