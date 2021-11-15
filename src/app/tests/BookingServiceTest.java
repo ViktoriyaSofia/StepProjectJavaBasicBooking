@@ -41,15 +41,7 @@ class BookingServiceTest {
     @Test
     void createNewBookingFlightNull_Successful() {
         Booking b = bs.createNewBooking(0, null);
-        assertEquals(0, b.getFlightID());
-        String checkedVal = null;
-        if (b.getpL() != null && b.getpL().size() > 0) {
-            checkedVal = b.getpL().get(0).getName();
-        }
-        assertNotEquals("Ivan", checkedVal);
-
         assertNull(b);
-
     }
 
     @Test
