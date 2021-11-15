@@ -4,7 +4,6 @@ import app.dao.BookingDaoFile;
 import app.domain.booking.Booking;
 import app.domain.booking.Passenger;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -58,6 +57,15 @@ public class BookingService {
     public List<Booking> getAllBookingsFromFile(){
         return dao.retrieve();
     }
+
+
+    /**
+     *  получить Optional<Booking> по его строковому id:
+     */
+    public Optional<Booking> getBookingById(String id){
+        return dao.retrieve().stream().filter(b -> b.getBookingID().equals(id)).findFirst();
+    }
+
 
     /**
      * Метод для удаления резервирования по заданному String айдишнику.   Айдишники придется брать
