@@ -17,9 +17,9 @@ import java.util.List;
 
 public class BookingControllerTest {
 
-    List<Passenger> p;
-    BookingController bc;
-    List<Booking> bL = new ArrayList<>();
+    private List<Passenger> p;
+    private BookingController bc;
+    private final List<Booking> bL = new ArrayList<>();
 
     @Before
     public void setUp(){
