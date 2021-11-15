@@ -29,8 +29,8 @@ public class BookingServiceMockitoTest {
     public void setUp(){
         Passenger p1 = new Passenger("Ivan", "Ivanov");
         Passenger p2 = new Passenger("Fedor", "Petrov");
-        pL1 = new ArrayList<>(List.of(p1));
-        pL2 = new ArrayList<>(List.of(p2));
+        pL1 = new ArrayList<>(List.of(p1, p2));
+        pL2 = new ArrayList<>(List.of(p1, p2));
     }
 
     public BookingServiceMockitoTest(){
@@ -41,8 +41,10 @@ public class BookingServiceMockitoTest {
 
     @Test
     public void getBookingByIdSuccessful(){
-        List<Booking> bLfromStorage = new ArrayList<>(List.of(new Booking(0, pL1),
-                new Booking(2, pL2)));
+        Booking b1 = new Booking(2);
+        b1.setpL(pL1);
+        List<Booking> bLfromStorage = new ArrayList<>(List.of(b1, new Booking(0, pL2) ));
+
         Mockito.when(dao.retrieve()).thenReturn(bLfromStorage);
         List<Booking> bl = bs.getAllBookingsFromFile();
         assertNotNull(bl);
