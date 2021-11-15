@@ -25,7 +25,7 @@ public class Console {
     Scanner scanner = new Scanner(System.in);
 
     public Console() throws IOException {
-        flightController = new FlightController(new FlightService(new FlightDaoFile()));
+        flightController = new FlightController(new FlightService(new FlightDaoFile("flights.bin")));
         bookingController = new BookingController(new BookingService(new BookingDaoFile()));
 
         int sizeFlightCollection = flightController.getFlightsFromDB().size();
@@ -49,7 +49,7 @@ public class Console {
         mainMenuOfBookingApp.add("0  .....>>  View all flights from Kiev");
         mainMenuOfBookingApp.add("1  .....>>  View the flights from Kiev in the next 24 hours");
         mainMenuOfBookingApp.add("2  .....>>  View flight information by flight ID");
-        mainMenuOfBookingApp.add("3  .....>>  Search for flights and Book the flight");
+        mainMenuOfBookingApp.add("3  .....>>  Search for flights and Book the flights");
         mainMenuOfBookingApp.add("4  .....>>  Cancel booking by it's ID");
         mainMenuOfBookingApp.add("5  .....>>  View list of all bookings of certain passenger");
         mainMenuOfBookingApp.add("6  .....>>  View list of all bookings");
@@ -251,33 +251,10 @@ public class Console {
     private void cancelBookingById(){
         System.out.println("\n>>> Cancel flight booking by it's ID!");
         String bookingID = "";
-
-        while (bookingID.equals("")){
-            System.out.print("Enter booking ID of Booking you'd like to cancel, required: [special bookingID format] >>> ");
+            System.out.print("Enter booking ID of Booking you'd like to cancel, example: [ef77909a5fcd4ffab52de499d3f8b198] >>> ");
             bookingID = scanner.nextLine().toLowerCase().trim();
-        }
-
+        System.out.println();
         bookingController.deleteBookingById(bookingID);
-
-//        Booking booking = controllerBookingCollection.getBookingByBookingID(bookingID);
-//        if(booking != null){
-//            int seatsInBooking = booking.getNumberOfSeats();
-//            Flight flight = booking.getFlight();
-//
-//            if(controllerBookingCollection.deleteBookingByID(bookingID)){
-//                flight.setSoldPlaces(flight.getSoldPlaces() - seatsInBooking);
-//                flight.setAvailablePlaces();
-//
-//                controllerFlightCollection.updateFlightCollection(flight);
-//                controllerFlightCollection.saveFlightCollectionToDB(controllerFlightCollection.getFlightCollection());
-//
-//                controllerBookingCollection.saveBookingCollectionToDB(controllerBookingCollection.getBookingCollection());
-//                System.out.println("\nThe Booking with booking ID='" + bookingID + "' was canceled!");
-//            }
-//
-//        } else {
-//            System.out.println("\nThere is No Booking Found with booking ID='" + bookingID + "'");
-//        }
     }
 
 
@@ -299,18 +276,6 @@ public class Console {
         surName = consoleController.toUpperCaseFirstLetterEachWorld(surName);
 
         bookingController.printBookingOfGivenPassenger(name, surName);
-
-//        if(bookings.size() != 0){
-//            int i = 1;
-//            System.out.printf("\nBookings for passenger %s %s:%n", name, surName);
-//            for(Booking booking : bookings){
-//                System.out.println("#" + i + "  >>> ");
-//                booking.prettyFormatBookingFullInfo();
-//                i++;
-//            }
-//        } else {
-//            System.out.printf("\nThere is No Bookings for passenger %s %s!%n", name, surName);
-//        }
     }
 
 //  Метод showAllBookingsCollection() - показывает информацию про все брони

@@ -39,11 +39,16 @@ public class BookingService {
      * Это основной метод создания резервирований (booking):
      */
     public Booking createNewBooking(int flightID, List<Passenger> passenger) {
-//        Booking b = new Booking(flightID, "LA",
-//                LocalDate.of(2021, 11, 30), 2);
-//              LocalDate.parse("20:09:2021", DateTimeFormatter.ofPattern("dd:MM:yyyy");
+        if (passenger == null) {
+            System.out.println("passenger list is empty!");
+            return null;
+        };
         Booking b = new Booking(flightID, passenger);
         b.setpL(passenger);
+        List<Booking> storedBookings = Collections.unmodifiableList(dao.retrieve());
+        List<Booking> updatedBookings = new ArrayList<>(storedBookings);
+        updatedBookings.add(b);
+        dao.store(new ArrayList<>(updatedBookings));
         return b;
     }
 
@@ -58,13 +63,18 @@ public class BookingService {
      * Метод для удаления резервирования по заданному String айдишнику.   Айдишники придется брать
      * из самих резервирований по:   bs.dao.getAll().get(0).bookingID;  (см. в App:  IDofBookingToBeDeleted  )
      */
-    public void cancelBookingById(String id) {
-        if (id == null) return;
+    public int cancelBookingById(String id) {
+        if (id == null) return -1;
         List<Booking> bL = Collections.unmodifiableList(dao.retrieve());
+
+        Optional<Integer> cancelBookingFlightID = bL.stream().filter(b -> b.bookingID.equals(id))
+                .map(Booking::getFlightID).findFirst();
+
         List<Booking> newBL = bL.stream().filter(el -> !el.getBookingID().equals(id)).collect(Collectors.toList());
         dao.store(newBL);
         System.out.println("booking number " + id + " removed");
         System.out.println("number of bookings after deletion: " + newBL.size());
+        return cancelBookingFlightID.orElse(-1);
     }
 
     /**

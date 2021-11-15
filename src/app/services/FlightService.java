@@ -48,6 +48,7 @@ public class FlightService {
 
     /** Генерация список Flight - ов, запись в базу данных (файл) + доп. методы**/
     public List<Flight> generateFlightDB (int flightsNumber, int nextDaysNumber) {
+
         for (int i = 0; i < flightsNumber; i++) {
             int flightId = generateRandomNumber(1000, 9999);
             String destination = generateDestination();
@@ -56,9 +57,10 @@ public class FlightService {
             int soldPlaces = generateRandomNumber(0, totalPlaces + 1);
 
             this.createNewFlight(flightId, destination, date, totalPlaces, soldPlaces);
+
         }
 
-        return this.getFlightsFromDB();
+        return flights;
     }
 
     private int generateRandomNumber(int min, int max){
@@ -88,19 +90,16 @@ public class FlightService {
     }
 
     /** Обновление или перезапись Flight **/
-    public int updateFlight(Flight flight){
-
+    public Flight updateFlight(Flight f){
         List<Flight> flights = this.getFlightsFromDB();
-        int flightIndex = flights.indexOf(flight);
 
-        if (flights.contains(flight)){
-            flights.set(flightIndex, flight);
-        }else {
-            flights.add(flight);
-            saveFlightToDB(flights);
+        int flightIndex = flights.indexOf(f);
+
+        if (flights.contains(f)){
+            flights.set(flightIndex, f);
         }
 
-        return flights.indexOf(flight);
+        return f;
     }
 
     /** Сортировка полёта по дате **/

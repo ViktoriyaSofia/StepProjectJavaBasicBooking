@@ -68,11 +68,12 @@ public class BookingController {
 
 
     /**
-     * Для использования в проекте
+     * Удаление резервирования флайта. Метод возращает flightID забронированного рейса/
+     * Если резервированние с заданным bookingID не найдено, метод вернёт -1 .
      */
-    public void deleteBookingById(String bookingId){
+    public int deleteBookingById(String bookingId){
         System.out.println("we are deleting now boooking with ID: " + bookingId);
-        bs.cancelBookingById(bookingId);
+        return bs.cancelBookingById(bookingId);
     }
 
     /**

@@ -4,14 +4,15 @@ import app.dao.BookingDaoFile;
 import app.domain.booking.Booking;
 import app.domain.booking.Passenger;
 import app.services.BookingService;
+import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BookingServiceTest {
@@ -22,11 +23,13 @@ class BookingServiceTest {
     static List<Booking> bL = new ArrayList<>();
 
     @BeforeAll
-    public static void setUp(){
-        p = new ArrayList<>(List.of(new Passenger("Ivan", "Ivanov")));
+    public static void setUpAll(){
         dao = new BookingDaoFile();
         bs = new BookingService(dao);
-
+    }
+    @BeforeEach
+    public void setUp(){
+        p = new ArrayList<>(List.of(new Passenger("Ivan", "Ivanov")));
     }
 
     @Test
@@ -44,6 +47,9 @@ class BookingServiceTest {
             checkedVal = b.getpL().get(0).getName();
         }
         assertNotEquals("Ivan", checkedVal);
+
+        assertNull(b);
+
     }
 
     @Test
@@ -58,7 +64,7 @@ class BookingServiceTest {
 
         bs.cancelBookingById("testID_is_2021");
         List<Booking> result = bs.dao.retrieve();
-        assertThat(result.size(), is(1));
-        assertThat(result.get(0).getFlightID(), is(1));
+        MatcherAssert.assertThat(result.size(), is(1));
+        MatcherAssert.assertThat(result.get(0).getFlightID(), is(1));
     }
 }
