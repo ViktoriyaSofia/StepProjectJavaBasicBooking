@@ -67,9 +67,9 @@ public class BookingController {
     }
 
     /**
-     *  получить Optional<Booking> по его строковому id:
+     *  получить Booking по его строковому id:
      */
-    public Optional<Booking> getBookingById(String id){
+    public Booking getBookingById(String id){
         return bs.getBookingById(id);
     }
 

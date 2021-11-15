@@ -60,10 +60,10 @@ public class BookingService {
     }
 
     /**
-     *  получить Optional<Booking> по его строковому id:
+     *  получить Booking по его строковому id:
      */
-    public Optional<Booking> getBookingById(String id){
-        return dao.retrieve().stream().filter(b -> b.getBookingID().equals(id)).findFirst();
+    public Booking getBookingById(String id){
+        return dao.retrieve().stream().filter(b -> b.getBookingID().equals(id)).findFirst().orElse(null);
     }
 
 
