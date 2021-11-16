@@ -1,8 +1,6 @@
 .idea/
 *.iml
 *.xml
-/flights.bin
 *.md
-/mentor_instructions/
-/mentor_instructions/
+/flights.bin
 /booking.bin
