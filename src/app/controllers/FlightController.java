@@ -3,7 +3,6 @@ package app.controllers;
 import app.domain.flight.Flight;
 import app.services.FlightService;
 
-import java.io.IOException;
 import java.util.List;
 
 public class FlightController {
@@ -13,7 +12,7 @@ public class FlightController {
         this.flightService = flightService;
     }
 
-    public List<Flight> getFlightsFromDB() throws IOException {
+    public List<Flight> getFlightsFromDB() {
         return flightService.getFlightsFromDB();
     }
 

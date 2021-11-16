@@ -6,14 +6,14 @@ import app.domain.booking.Booking;
 import app.domain.booking.Passenger;
 import app.services.BookingService;
 import org.hamcrest.MatcherAssert;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BookingControllerTest {
 

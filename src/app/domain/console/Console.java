@@ -1,20 +1,20 @@
 package app.domain.console;
 
-import app.dao.FlightDaoFile;
-import app.services.FlightService;
-import app.controllers.FlightController;
-import app.domain.flight.Flight;
-
-import app.dao.BookingDaoFile;
-import app.services.BookingService;
 import app.controllers.BookingController;
+import app.controllers.FlightController;
+import app.dao.BookingDaoFile;
+import app.dao.FlightDaoFile;
 import app.domain.booking.Booking;
 import app.domain.booking.Passenger;
-
+import app.domain.flight.Flight;
 import app.exceptions.WrongInputDataException;
+import app.services.BookingService;
+import app.services.FlightService;
 
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class Console {
     private final FlightController flightController;
@@ -24,7 +24,7 @@ public class Console {
     private final ConsoleController consoleController;
     Scanner scanner = new Scanner(System.in);
 
-    public Console() throws IOException {
+    public Console() {
         flightController = new FlightController(new FlightService(new FlightDaoFile("flights.bin")));
         bookingController = new BookingController(new BookingService(new BookingDaoFile()));
 
@@ -35,7 +35,7 @@ public class Console {
 
         if(sizeFlightCollection == 0){
             System.out.println("\n>>> Generating Flight Collection!");
-            flightController.generateFlightDB(1000, 3);
+            flightController.generateFlightDB(1000, 15);
             System.out.println("New Flight Collection contains " + flightController.getFlightsFromDB().size() + " flights");
         }
 
@@ -104,7 +104,7 @@ public class Console {
 
 
     //  Метод showAllFlightsCollection() - показывает информацию про все рейсы из List<Flight> flightCollection
-    private void showAllFlightsCollection() throws IOException {
+    private void showAllFlightsCollection() {
         System.out.println("\nView all flights from Kiev >>> ");
         System.out.println("\nAll Flight from Kiev in flightCollection DB:");
         flightController.showFlightsCollection(flightController.sortFlightsByDate(flightController.getFlightsFromDB()));
@@ -125,7 +125,7 @@ public class Console {
         int flightID = -1;
 
         while (flightID == -1){
-            System.out.print("Enter flight ID of Flight you'd like to get information about, required: [integer only [100000:999999]] >>> ");
+            System.out.print("Enter flight ID of Flight you'd like to get information about, required: [integer only [100000 : 999999]] >>> ");
             flightID = consoleController.checkInputDataInteger(scanner.nextLine().toLowerCase().trim(), 100000, 999999);
         }
 
@@ -192,22 +192,10 @@ public class Console {
 
                 if(booking != null){
                     Flight flight = flightController.getFlightById(flightID);
-
-
-                    System.out.println("\n!From searchFlightAndBook()! >>> Flight from DB before update:");
-                    flight.prettyFormatFlightFullInfo();
-
                     flight.setSoldPlaces(flight.getSoldPlaces() + ticketsNumber);
                     flight.setAvailablePlaces();
 
-                    System.out.println("\n!From searchFlightAndBook()! >>> Updated flight before flightController.updateFlight(flight):");
-                    flight.prettyFormatFlightFullInfo();
-
                     flightController.updateFlight(flight);
-
-                    System.out.println("\n!From searchFlightAndBook()! >>> Flight from DB after flightController.updateFlight(flight):");
-                    flightController.getFlightById(flightID).prettyFormatFlightFullInfo();
-
 
                     System.out.println("\nBooking Done!");
                     System.out.println(booking);
@@ -220,6 +208,7 @@ public class Console {
                 , destinationStr, dateStr, ticketsNumber); }
 
     }
+
 
     //  Метод createPassengerList() - формирует коллекцию пассажиров для брони билетов на рейс
     private List<Passenger> createPassengerList(int ticketsNumber){
@@ -253,37 +242,28 @@ public class Console {
     private void cancelBookingById(){
         System.out.println("\n>>> Cancel flight booking by it's ID!");
         String bookingID = "";
-            System.out.print("Enter booking ID of Booking you'd like to cancel, example: [ef77909a5fcd4ffab52de499d3f8b198] >>> ");
-            bookingID = scanner.nextLine().toLowerCase().trim();
+        System.out.print("Enter booking ID of Booking you'd like to cancel, example: [ef77909a5fcd4ffab52de499d3f8b198] >>> ");
+        bookingID = scanner.nextLine().toLowerCase().trim();
         System.out.println();
-
 
         Booking booking = bookingController.getBookingById(bookingID);
         if(booking != null){
             int flightIDToUpdate = booking.getFlightID();
-            int seatsToCancel = booking.getpL().size();
+            Flight flightToUpdate = flightController.getFlightById(flightIDToUpdate);
 
-            System.out.println("To update flight, flightID: " + flightIDToUpdate);
-            System.out.println("Seats to cancel: " + seatsToCancel);
+            if(flightToUpdate != null){
+                int seatsToCancel = booking.getpL().size();
 
-            int isBookingCanceled = bookingController.deleteBookingById(bookingID);
+                int isBookingCanceled = bookingController.deleteBookingById(bookingID);
 
-            if(isBookingCanceled != -1){
-                System.out.println("\nThe Booking with booking ID='" + bookingID + "' was canceled!");
+                if(isBookingCanceled != -1){
+                    System.out.println("\nThe Booking with booking ID='" + bookingID + "' was canceled!");
 
-                Flight flight = flightController.getFlightById(flightIDToUpdate);
+                    flightToUpdate.setSoldPlaces(flightToUpdate.getSoldPlaces() - seatsToCancel);
+                    flightToUpdate.setAvailablePlaces();
 
-                System.out.println("\n!From Cancel Booking! >>> Flight from DB before update:");
-                flight.prettyFormatFlightFullInfo();
-
-                flight.setSoldPlaces(flight.getSoldPlaces() - seatsToCancel);
-                flight.setAvailablePlaces();
-                System.out.println("\n!From Cancel Booking! >>> Updated flight before flightController.updateFlight(flight):");
-                flight.prettyFormatFlightFullInfo();
-
-                flightController.updateFlight(flight);
-                System.out.println("\n!From Cancel Booking! >>> Flight from DB after flightController.updateFlight(flight):");
-                flightController.getFlightById(flightIDToUpdate).prettyFormatFlightFullInfo();
+                    flightController.updateFlight(flightToUpdate);
+                }
             }
 
         } else {
@@ -309,7 +289,7 @@ public class Console {
             surName = consoleController.checkInputDataChars(scanner.nextLine().toLowerCase());
         }
         surName = consoleController.toUpperCaseFirstLetterEachWorld(surName);
-
+        System.out.println();
         bookingController.printBookingOfGivenPassenger(name, surName);
     }
 
