@@ -19,18 +19,16 @@ import static org.junit.Assert.assertNotNull;
 
 public class BookingServiceMockitoTest {
 
+    private List<Passenger> pL;
 
     @Mock
-    private List<Passenger> pL1, pL2;
     private final BookingDaoFile dao;
     private final BookingService bs;
 
     @BeforeEach
     public void setUp(){
-        Passenger p1 = new Passenger("Ivan", "Ivanov");
-        Passenger p2 = new Passenger("Fedor", "Petrov");
-        pL1 = new ArrayList<>(List.of(p1, p2));
-        pL2 = new ArrayList<>(List.of(p1, p2));
+        pL = new ArrayList<>(List.of(new Passenger("Ivan", "Ivanov"),
+                new Passenger("Fedor", "Petrov")));
     }
 
     public BookingServiceMockitoTest(){
@@ -42,8 +40,8 @@ public class BookingServiceMockitoTest {
     @Test
     public void getBookingByIdSuccessful(){
         Booking b1 = new Booking(2);
-        b1.setpL(pL1);
-        List<Booking> bLfromStorage = new ArrayList<>(List.of(b1, new Booking(0, pL2) ));
+        b1.setpL(pL);
+        List<Booking> bLfromStorage = new ArrayList<>(List.of(b1, new Booking(0, pL) ));
 
         Mockito.when(dao.retrieve()).thenReturn(bLfromStorage);
         List<Booking> bl = bs.getAllBookingsFromFile();
