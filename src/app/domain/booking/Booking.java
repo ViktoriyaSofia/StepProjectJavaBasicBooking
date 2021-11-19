@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.UUID;
 
-public class Booking implements Serializable, Cloneable {
+public class Booking implements Serializable, Cloneable, Comparable<Booking> {
 
     private int flightID;
     public String bookingID;
@@ -92,6 +92,38 @@ public class Booking implements Serializable, Cloneable {
 
     public void setBookingTestID(String testID){this.bookingID = testID;}
 
+
+    @Override
+    public int compareTo(Booking o){
+        return this.date.compareTo(o.date);
+    }
+        public int compareToAlternative(Booking o){
+        if (this.date.isBefore(o.date)){
+            return 1;
+        } else if (this.date.isEqual(o.date)){
+            return 0;
+        } else return -1;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) return  true;
+        if (o == null || o.getClass() != this.getClass()) {
+            return false;
+        };
+        Booking objUnderCheck = (Booking) o;
+        if ( objUnderCheck.getBookingID().equals(this.bookingID)) {
+            {
+                return true;
+            }
+        } else return false;
+    }
+
+    @Override
+    public int hashCode(){
+    return Objects.hash(this.bookingID);
+    }
 
 
     @Override
